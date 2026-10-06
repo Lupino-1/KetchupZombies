@@ -2,13 +2,13 @@ package dev.rajce.ketchupZombies;
 
 import dev.lupino1.LPLibrary;
 import dev.lupino1.messages.MessageManager;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.units.qual.C;
 
 public final class KetchupZombies extends JavaPlugin {
-
 
     private MessageManager messageManager;
 
