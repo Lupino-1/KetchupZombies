@@ -2,6 +2,8 @@ package dev.rajce.ketchupZombies;
 
 import dev.lupino1.LPLibrary;
 import dev.lupino1.messages.MessageManager;
+import dev.rajce.ketchupZombies.managers.GameManager;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -9,8 +11,9 @@ import org.checkerframework.checker.units.qual.C;
 
 public final class KetchupZombies extends JavaPlugin {
 
-
+    @Getter
     private MessageManager messageManager;
+    private GameManager gameManager;
 
     @Override
     public void onEnable() {
