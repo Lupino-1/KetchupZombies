@@ -5,7 +5,4 @@ main: dev.rajce.ketchupZombies.KetchupZombies
 api-version: '1.21.4'
 load: POSTWORLD
 
-authors: [ Lupino1 ]
-
-commands:
-  example:
+authors: [ Lupino1, vitek07k ]
