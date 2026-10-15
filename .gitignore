@@ -100,6 +100,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+.local/
+
 .gradle
 build/
 

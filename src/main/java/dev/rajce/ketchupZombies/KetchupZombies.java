@@ -4,6 +4,8 @@ import dev.lupino1.LPLibrary;
 import dev.lupino1.config.ConfigDocument;
 import dev.lupino1.config.ConfigHolder;
 import dev.lupino1.messages.MessageManager;
+import dev.rajce.ketchupZombies.managers.BlueprintManager;
+import dev.rajce.ketchupZombies.managers.CommandManager;
 import dev.rajce.ketchupZombies.managers.GameManager;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,7 +25,8 @@ public final class KetchupZombies extends JavaPlugin {
 
         configHolder = ConfigHolder.create(this, ConfigDocument.class, "config.yml");
 
-
+        BlueprintManager blueprintManager = new BlueprintManager(this);
+        new CommandManager(this, blueprintManager).register();
     }
 
     @Override
