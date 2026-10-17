@@ -15,6 +15,15 @@ public class Blueprint {
     private final Location corner1;
     private final Location corner2;
     private final Map<Pos, BlockData> blocks = new HashMap<>();
+    private int sizeX;
+    private int sizeY;
+    private int sizeZ;
+
+    public void size(int sizeX, int sizeY, int sizeZ) {
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+        this.sizeZ = sizeZ;
+    }
 
     public record Pos(int x, int y, int z) {
     }

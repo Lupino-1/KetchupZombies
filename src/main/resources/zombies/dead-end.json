@@ -1,0 +1,3406 @@
+{
+  "source": "Hypixel Zombies Dead End",
+  "note": "On-death spawns are the lines marked 'Spawns' under a mob. Strength is omitted when the source did not list it.",
+  "rounds": [
+    {
+      "round": 1,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 4,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.25,
+              "armor": 4.0,
+              "followRange": 35.0,
+              "strength": 8,
+              "equipment": { "leggings": "LEATHER_BLACK", "mainHand": "WOODEN_AXE" }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 4,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.25,
+              "armor": 4.0,
+              "followRange": 35.0,
+              "strength": 8,
+              "equipment": { "leggings": "LEATHER_BLACK", "mainHand": "WOODEN_AXE" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 4,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.25,
+              "armor": 7.0,
+              "followRange": 35.0,
+              "strength": 9,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "mainHand": "WOODEN_AXE" }
+            },
+            {
+              "count": 1,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 18.0,
+              "speed": 0.31,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 5,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.25,
+              "armor": 7.0,
+              "followRange": 35.0,
+              "strength": 9,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "mainHand": "WOODEN_AXE" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 4,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.25,
+              "armor": 7.0,
+              "followRange": 35.0,
+              "strength": 9,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "mainHand": "WOODEN_AXE" }
+            },
+            {
+              "count": 1,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 18.0,
+              "speed": 0.31,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.25,
+              "armor": 7.0,
+              "followRange": 35.0,
+              "strength": 9,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "mainHand": "WOODEN_AXE" }
+            },
+            {
+              "count": 1,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 18.0,
+              "speed": 0.31,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 2,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.25,
+              "armor": 7.0,
+              "followRange": 35.0,
+              "strength": 9,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "mainHand": "WOODEN_AXE" }
+            },
+            {
+              "count": 1,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 18.0,
+              "speed": 0.31,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 4,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.25,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 11,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "WOODEN_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.25,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 11,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "WOODEN_AXE" }
+            },
+            {
+              "count": 1,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.25,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 11,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "WOODEN_AXE" }
+            },
+            {
+              "count": 1,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.25,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 11,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "WOODEN_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "LIL_BOMBIE",
+              "attackDamage": 3.0,
+              "health": 8.0,
+              "speed": 0.36,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "baby": true,
+              "equipment": { "helmet": "TNT", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.25,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 11,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "WOODEN_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "LIL_BOMBIE",
+              "attackDamage": 3.0,
+              "health": 8.0,
+              "speed": 0.36,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "baby": true,
+              "equipment": { "helmet": "TNT", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" }
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.25,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 11,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "WOODEN_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            },
+            {
+              "count": 2,
+              "type": "LIL_BOMBIE",
+              "attackDamage": 3.0,
+              "health": 8.0,
+              "speed": 0.36,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "baby": true,
+              "equipment": { "helmet": "TNT", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 6,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.26,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 12,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "STONE_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 18.0,
+              "speed": 0.31,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 1,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.26,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 12,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "STONE_AXE" }
+            },
+            {
+              "count": 1,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 18.0,
+              "speed": 0.31,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 2,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.26,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 12,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "STONE_AXE" }
+            },
+            {
+              "count": 1,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 18.0,
+              "speed": 0.31,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 2,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 7,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.26,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 12,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "STONE_AXE" }
+            },
+            {
+              "count": 1,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 18.0,
+              "speed": 0.31,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 2,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 2,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.26,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 12,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "STONE_AXE" }
+            },
+            {
+              "count": 1,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 18.0,
+              "speed": 0.31,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 2,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 2,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.26,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 12,
+              "equipment": { "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "STONE_AXE" }
+            },
+            {
+              "count": 1,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 18.0,
+              "speed": 0.31,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 2,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 8,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.27,
+              "armor": 10.0,
+              "followRange": 35.0,
+              "strength": 12,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            },
+            {
+              "count": 2,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.27,
+              "armor": 10.0,
+              "followRange": 35.0,
+              "strength": 12,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            },
+            {
+              "count": 2,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.27,
+              "armor": 10.0,
+              "followRange": 35.0,
+              "strength": 12,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            },
+            {
+              "count": 1,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 9,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 4,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.27,
+              "armor": 10.0,
+              "followRange": 35.0,
+              "strength": 13,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 6,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 2,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.27,
+              "armor": 10.0,
+              "followRange": 35.0,
+              "strength": 13,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 6,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 2,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.27,
+              "armor": 10.0,
+              "followRange": 35.0,
+              "strength": 13,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 6,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 10,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 5,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.27,
+              "armor": 10.0,
+              "followRange": 35.0,
+              "strength": 13,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 18.0,
+              "speed": 0.31,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 5,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.27,
+              "armor": 10.0,
+              "followRange": 35.0,
+              "strength": 13,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 4,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 5,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.27,
+              "armor": 10.0,
+              "followRange": 35.0,
+              "strength": 13,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "LIL_BOMBIE",
+              "attackDamage": 3.0,
+              "health": 8.0,
+              "speed": 0.36,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "baby": true,
+              "equipment": { "helmet": "TNT", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" }
+            },
+            {
+              "count": 1,
+              "type": "BOMBIE",
+              "attackDamage": 3.0,
+              "health": 240.0,
+              "speed": 0.33,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 5,
+              "equipment": { "helmet": "TNT", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                {
+                  "count": 1,
+                  "type": "LIL_BOMBIE",
+                  "attackDamage": 3.0,
+                  "health": 8.0,
+                  "speed": 0.36,
+                  "armor": 8.0,
+                  "followRange": 35.0,
+                  "baby": true,
+                  "equipment": { "helmet": "TNT", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 11,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 5,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.28,
+              "armor": 12.0,
+              "followRange": 35.0,
+              "strength": 15,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 5,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.28,
+              "armor": 12.0,
+              "followRange": 35.0,
+              "strength": 15,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.28,
+              "armor": 12.0,
+              "followRange": 35.0,
+              "strength": 15,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 1,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 12,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.28,
+              "armor": 12.0,
+              "followRange": 35.0,
+              "strength": 15,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            },
+            {
+              "count": 5,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 6,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.28,
+              "armor": 12.0,
+              "followRange": 35.0,
+              "strength": 15,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 6,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 2,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.28,
+              "armor": 12.0,
+              "followRange": 35.0,
+              "strength": 15,
+              "equipment": { "chestplate": "CHAINMAIL", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 6,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 13,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.29,
+              "armor": 13.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "chestplate": "IRON", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 4,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 20.0,
+              "speed": 0.33,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 4,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 4,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.29,
+              "armor": 13.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "chestplate": "IRON", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 20.0,
+              "speed": 0.33,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 2,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.29,
+              "armor": 13.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "chestplate": "IRON", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 20.0,
+              "speed": 0.33,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 2,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 14,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 8,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.29,
+              "armor": 13.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "chestplate": "IRON", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 5,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            },
+            {
+              "count": 5,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 6,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.29,
+              "armor": 13.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "chestplate": "IRON", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            },
+            {
+              "count": 3,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 6,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.29,
+              "armor": 13.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "chestplate": "IRON", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            },
+            {
+              "count": 3,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 6,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 15,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 6,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.29,
+              "armor": 13.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "chestplate": "IRON", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 5,
+              "type": "LIL_BOMBIE",
+              "attackDamage": 3.0,
+              "health": 14.0,
+              "speed": 0.405,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 25,
+              "baby": true,
+              "equipment": { "helmet": "TNT", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" }
+            },
+            {
+              "count": 5,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 22,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            },
+            {
+              "count": 4,
+              "type": "BLAZE",
+              "attackDamage": 6.0,
+              "health": 40.0,
+              "speed": 0.7,
+              "armor": 0.0,
+              "followRange": 48.0
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.29,
+              "armor": 13.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "chestplate": "IRON", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "LIL_BOMBIE",
+              "attackDamage": 3.0,
+              "health": 14.0,
+              "speed": 0.405,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 25,
+              "baby": true,
+              "equipment": { "helmet": "TNT", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" }
+            },
+            {
+              "count": 4,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 22,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.29,
+              "armor": 13.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "chestplate": "IRON", "leggings": "CHAINMAIL", "boots": "CHAINMAIL", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "LIL_BOMBIE",
+              "attackDamage": 3.0,
+              "health": 14.0,
+              "speed": 0.405,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 25,
+              "baby": true,
+              "equipment": { "helmet": "TNT", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" }
+            },
+            {
+              "count": 3,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 22,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 16,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 4,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 20.0,
+              "speed": 0.33,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 4,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.34,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 34,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 4,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 20.0,
+              "speed": 0.33,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 4,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 14,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 22,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 4,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 18.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 0,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            },
+            {
+              "count": 4,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 14,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 17,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            },
+            {
+              "count": 3,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 15,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            },
+            {
+              "count": 4,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 22,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            },
+            {
+              "count": 3,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 15,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            },
+            {
+              "count": 4,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 22,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 2,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 16.0,
+              "speed": 0.36,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 5
+            },
+            {
+              "count": 3,
+              "type": "EMPOWERED_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 15,
+              "equipment": { "chestplate": "LEATHER_RED", "leggings": "LEATHER_RED", "boots": "LEATHER_RED", "mainHand": "DIAMOND_AXE" }
+            },
+            {
+              "count": 4,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 22,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 18,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 8,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            },
+            {
+              "count": 4,
+              "type": "BLAZE",
+              "attackDamage": 6.0,
+              "health": 40.0,
+              "speed": 0.7,
+              "armor": 0.0,
+              "followRange": 48.0
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 8,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 3,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 8,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 19,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 5,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 22.0,
+              "speed": 0.36,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "strength": 9,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 3,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.35,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 36,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            },
+            {
+              "count": 3,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 14,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 5,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 22.0,
+              "speed": 0.36,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "strength": 9,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 3,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.35,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 36,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            },
+            {
+              "count": 3,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 14,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 5,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.3,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 3,
+              "type": "ZOMBIE_PIGMAN",
+              "attackDamage": 5.0,
+              "health": 22.0,
+              "speed": 0.36,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "strength": 9,
+              "equipment": { "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 3,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.35,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 36,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            },
+            {
+              "count": 3,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 14,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" },
+              "onDeath": [
+                { "count": 3, "type": "MAGMA_CUBE", "attackDamage": 0.0, "health": 4.0, "speed": 0.44, "armor": 6.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 20,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 11,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.34,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 34,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            },
+            {
+              "count": 6,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 11,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.34,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 34,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            },
+            {
+              "count": 6,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" }
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 11,
+              "type": "FIRE_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.34,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 34,
+              "equipment": {
+                "chestplate": "LEATHER_ORANGE",
+                "leggings": "LEATHER_ORANGE",
+                "boots": "LEATHER_ORANGE",
+                "armorEnchantments": ["UNBREAKING_1"],
+                "mainHand": "BLAZE_ROD",
+                "mainHandEnchantments": ["FIRE_ASPECT_1"]
+              }
+            },
+            {
+              "count": 4,
+              "type": "MAGMA_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 22.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 16,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_ORANGE", "leggings": "LEATHER_ORANGE", "boots": "LEATHER_ORANGE", "mainHand": "GOLDEN_SWORD" }
+            },
+            {
+              "count": 1,
+              "type": "INFERNO",
+              "attackDamage": 3.0,
+              "health": 330.0,
+              "speed": 0.33,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 20,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_YELLOW", "leggings": "LEATHER_YELLOW", "boots": "LEATHER_YELLOW", "mainHand": "GOLDEN_SWORD" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 21,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 6,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.31,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 8,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 25.0,
+              "speed": 0.44,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 33
+            },
+            {
+              "count": 9,
+              "type": "SKELEFISH",
+              "attackDamage": 2.0,
+              "health": 24.0,
+              "speed": 0.3,
+              "armor": 6.0,
+              "followRange": 16.0,
+              "equipment": {
+                "helmet": "PLAYER_SKULL",
+                "chestplate": "LEATHER_GRAY",
+                "leggings": "LEATHER_GRAY",
+                "boots": "LEATHER_GRAY",
+                "mainHand": "BOW",
+                "mainHandEnchantments": ["UNBREAKING_1"]
+              },
+              "onDeath": [
+                { "count": 1, "type": "SILVERFISH", "attackDamage": 2.0, "health": 5.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 5,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.31,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 7,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 25.0,
+              "speed": 0.44,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 33
+            },
+            {
+              "count": 7,
+              "type": "SKELEFISH",
+              "attackDamage": 2.0,
+              "health": 24.0,
+              "speed": 0.3,
+              "armor": 6.0,
+              "followRange": 16.0,
+              "equipment": {
+                "helmet": "PLAYER_SKULL",
+                "chestplate": "LEATHER_GRAY",
+                "leggings": "LEATHER_GRAY",
+                "boots": "LEATHER_GRAY",
+                "mainHand": "BOW",
+                "mainHandEnchantments": ["UNBREAKING_1"]
+              },
+              "onDeath": [
+                { "count": 1, "type": "SILVERFISH", "attackDamage": 2.0, "health": 5.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 5,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.31,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 7,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 25.0,
+              "speed": 0.44,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 33
+            },
+            {
+              "count": 7,
+              "type": "SKELEFISH",
+              "attackDamage": 2.0,
+              "health": 24.0,
+              "speed": 0.3,
+              "armor": 6.0,
+              "followRange": 16.0,
+              "equipment": {
+                "helmet": "PLAYER_SKULL",
+                "chestplate": "LEATHER_GRAY",
+                "leggings": "LEATHER_GRAY",
+                "boots": "LEATHER_GRAY",
+                "mainHand": "BOW",
+                "mainHandEnchantments": ["UNBREAKING_1"]
+              },
+              "onDeath": [
+                { "count": 1, "type": "SILVERFISH", "attackDamage": 2.0, "health": 5.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 22,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 22,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 24.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 50,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 22,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 24.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 50,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 21,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 24.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 50,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 23,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.31,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 12,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 25.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 50,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.31,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 11,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 25.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 50,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.31,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 17,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 11,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 25.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 50,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 24,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.32,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 19,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 7,
+              "type": "SKELEFISH",
+              "attackDamage": 2.0,
+              "health": 24.0,
+              "speed": 0.3,
+              "armor": 6.0,
+              "followRange": 16.0,
+              "equipment": {
+                "helmet": "PLAYER_SKULL",
+                "chestplate": "LEATHER_GRAY",
+                "leggings": "LEATHER_GRAY",
+                "boots": "LEATHER_GRAY",
+                "mainHand": "BOW",
+                "mainHandEnchantments": ["UNBREAKING_1"]
+              },
+              "onDeath": [
+                { "count": 1, "type": "SILVERFISH", "attackDamage": 2.0, "health": 5.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0 }
+              ]
+            },
+            {
+              "count": 10,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 25.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 50,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.32,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 19,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 7,
+              "type": "SKELEFISH",
+              "attackDamage": 2.0,
+              "health": 24.0,
+              "speed": 0.3,
+              "armor": 6.0,
+              "followRange": 16.0,
+              "equipment": {
+                "helmet": "PLAYER_SKULL",
+                "chestplate": "LEATHER_GRAY",
+                "leggings": "LEATHER_GRAY",
+                "boots": "LEATHER_GRAY",
+                "mainHand": "BOW",
+                "mainHandEnchantments": ["UNBREAKING_1"]
+              },
+              "onDeath": [
+                { "count": 1, "type": "SILVERFISH", "attackDamage": 2.0, "health": 5.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0 }
+              ]
+            },
+            {
+              "count": 8,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 25.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 50,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.32,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 19,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 7,
+              "type": "SKELEFISH",
+              "attackDamage": 2.0,
+              "health": 24.0,
+              "speed": 0.3,
+              "armor": 6.0,
+              "followRange": 16.0,
+              "equipment": {
+                "helmet": "PLAYER_SKULL",
+                "chestplate": "LEATHER_GRAY",
+                "leggings": "LEATHER_GRAY",
+                "boots": "LEATHER_GRAY",
+                "mainHand": "BOW",
+                "mainHandEnchantments": ["UNBREAKING_1"]
+              },
+              "onDeath": [
+                { "count": 1, "type": "SILVERFISH", "attackDamage": 2.0, "health": 5.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0 }
+              ]
+            },
+            {
+              "count": 8,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 25.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 50,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 25,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.32,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 19,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 5,
+              "type": "LIL_BOMBIE",
+              "attackDamage": 3.0,
+              "health": 16.0,
+              "speed": 0.42,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 30,
+              "baby": true,
+              "equipment": { "helmet": "TNT", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" }
+            },
+            {
+              "count": 11,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 26.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 55,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.32,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 19,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 5,
+              "type": "LIL_BOMBIE",
+              "attackDamage": 3.0,
+              "health": 16.0,
+              "speed": 0.42,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 30,
+              "baby": true,
+              "equipment": { "helmet": "TNT", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" }
+            },
+            {
+              "count": 10,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 26.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 55,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.32,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 19,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 5,
+              "type": "LIL_BOMBIE",
+              "attackDamage": 3.0,
+              "health": 16.0,
+              "speed": 0.42,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 30,
+              "baby": true,
+              "equipment": { "helmet": "TNT", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" }
+            },
+            {
+              "count": 12,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 26.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 55,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 26,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            { "count": 26, "type": "WOLF", "attackDamage": 4.0, "health": 30.0, "speed": 0.47, "armor": 0.0, "followRange": 16.0, "strength": 52 }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            { "count": 26, "type": "WOLF", "attackDamage": 4.0, "health": 30.0, "speed": 0.47, "armor": 0.0, "followRange": 16.0, "strength": 52 }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            { "count": 26, "type": "WOLF", "attackDamage": 4.0, "health": 30.0, "speed": 0.47, "armor": 0.0, "followRange": 16.0, "strength": 52 }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 27,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.33,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 21,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 9,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 26.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 55,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            },
+            {
+              "count": 10,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 25.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 50,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.33,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 21,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 9,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 26.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 55,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            },
+            {
+              "count": 9,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 25.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 50,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 7,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.33,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 21,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 9,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 26.0,
+              "speed": 0.3,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 55,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            },
+            {
+              "count": 9,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 25.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 50,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 28,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 9,
+              "type": "SKELEFISH",
+              "attackDamage": 2.0,
+              "health": 24.0,
+              "speed": 0.3,
+              "armor": 6.0,
+              "followRange": 16.0,
+              "equipment": {
+                "helmet": "PLAYER_SKULL",
+                "chestplate": "LEATHER_GRAY",
+                "leggings": "LEATHER_GRAY",
+                "boots": "LEATHER_GRAY",
+                "mainHand": "BOW",
+                "mainHandEnchantments": ["UNBREAKING_1"]
+              },
+              "onDeath": [
+                { "count": 1, "type": "SILVERFISH", "attackDamage": 2.0, "health": 5.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0 }
+              ]
+            },
+            {
+              "count": 11,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 60,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            },
+            {
+              "count": 12,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 53,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 8,
+              "type": "SKELEFISH",
+              "attackDamage": 2.0,
+              "health": 24.0,
+              "speed": 0.3,
+              "armor": 6.0,
+              "followRange": 16.0,
+              "equipment": {
+                "helmet": "PLAYER_SKULL",
+                "chestplate": "LEATHER_GRAY",
+                "leggings": "LEATHER_GRAY",
+                "boots": "LEATHER_GRAY",
+                "mainHand": "BOW",
+                "mainHandEnchantments": ["UNBREAKING_1"]
+              },
+              "onDeath": [
+                { "count": 1, "type": "SILVERFISH", "attackDamage": 2.0, "health": 5.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0 }
+              ]
+            },
+            {
+              "count": 8,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 60,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            },
+            {
+              "count": 11,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 53,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 8,
+              "type": "SKELEFISH",
+              "attackDamage": 2.0,
+              "health": 24.0,
+              "speed": 0.3,
+              "armor": 6.0,
+              "followRange": 16.0,
+              "equipment": {
+                "helmet": "PLAYER_SKULL",
+                "chestplate": "LEATHER_GRAY",
+                "leggings": "LEATHER_GRAY",
+                "boots": "LEATHER_GRAY",
+                "mainHand": "BOW",
+                "mainHandEnchantments": ["UNBREAKING_1"]
+              },
+              "onDeath": [
+                { "count": 1, "type": "SILVERFISH", "attackDamage": 2.0, "health": 5.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0 }
+              ]
+            },
+            {
+              "count": 8,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 60,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            },
+            {
+              "count": 11,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 53,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 29,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 8,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.33,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 21,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 13,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 28.0,
+              "speed": 0.46,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 44
+            },
+            {
+              "count": 12,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 60,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 8,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.33,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 21,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 12,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 28.0,
+              "speed": 0.46,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 44
+            },
+            {
+              "count": 11,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 60,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 8,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.33,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 21,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 12,
+              "type": "WOLF",
+              "attackDamage": 4.0,
+              "health": 28.0,
+              "speed": 0.46,
+              "armor": 0.0,
+              "followRange": 16.0,
+              "strength": 44
+            },
+            {
+              "count": 10,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 60,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 30,
+      "waves": [
+        {
+          "wave": 1,
+          "mobs": [
+            {
+              "count": 9,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.34,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 22,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 13,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 60,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            },
+            {
+              "count": 13,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 53,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 2,
+          "mobs": [
+            {
+              "count": 8,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.34,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 22,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 12,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 60,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            },
+            {
+              "count": 12,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 53,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            }
+          ]
+        },
+        {
+          "wave": 3,
+          "mobs": [
+            {
+              "count": 8,
+              "type": "ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 20.0,
+              "speed": 0.34,
+              "armor": 15.0,
+              "followRange": 35.0,
+              "strength": 22,
+              "equipment": { "chestplate": "IRON", "leggings": "IRON", "boots": "IRON", "mainHand": "IRON_AXE" }
+            },
+            {
+              "count": 12,
+              "type": "GUARDIAN",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.31,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 60,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_CYAN", "leggings": "LEATHER_CYAN", "boots": "LEATHER_CYAN" }
+            },
+            {
+              "count": 12,
+              "type": "ENDER_ZOMBIE",
+              "attackDamage": 3.0,
+              "health": 28.0,
+              "speed": 0.32,
+              "armor": 8.0,
+              "followRange": 35.0,
+              "strength": 53,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "LEATHER_BLACK", "leggings": "LEATHER_BLACK", "boots": "LEATHER_BLACK" },
+              "onDeath": [
+                { "count": 1, "type": "ENDERMITE", "attackDamage": 2.0, "health": 10.0, "speed": 0.25, "armor": 0.0, "followRange": 16.0, "strength": 12 }
+              ]
+            },
+            {
+              "count": 1,
+              "type": "BROODMOTHER",
+              "attackDamage": 3.0,
+              "health": 520.0,
+              "speed": 0.34,
+              "armor": 11.0,
+              "followRange": 35.0,
+              "strength": 60,
+              "equipment": { "helmet": "PLAYER_SKULL", "chestplate": "GOLDEN", "leggings": "GOLDEN", "boots": "GOLDEN" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import dev.rajce.ketchupZombies.KetchupZombies;
 import dev.rajce.ketchupZombies.models.Blueprint;
 import lombok.Getter;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 
@@ -17,9 +18,7 @@ import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -75,6 +74,8 @@ public class BlueprintManager {
         int maxY = Math.min(world.getMaxHeight() - 1, Math.max(first.getBlockY(), second.getBlockY()));
         int minZ = Math.min(first.getBlockZ(), second.getBlockZ());
         int maxZ = Math.max(first.getBlockZ(), second.getBlockZ());
+
+        blueprint.size(maxX - minX + 1, maxY - minY + 1, maxZ - minZ + 1);
 
         int minChunkX = minX >> 4;
         int maxChunkX = maxX >> 4;
@@ -143,50 +144,76 @@ public class BlueprintManager {
         int baseX = origin.getBlockX();
         int baseY = origin.getBlockY();
         int baseZ = origin.getBlockZ();
-        Map<Long, List<PasteBlock>> byChunk = new HashMap<>();
-        for (Map.Entry<Blueprint.Pos, BlockData> entry : blueprint.getBlocks().entrySet()) {
-            Blueprint.Pos pos = entry.getKey();
-            int x = baseX + pos.x();
-            int y = baseY + pos.y();
-            int z = baseZ + pos.z();
-            long key = chunkKey(x >> 4, z >> 4);
-            byChunk.computeIfAbsent(key, ignored -> new ArrayList<>()).add(new PasteBlock(x, y, z, entry.getValue().clone()));
+        int sizeX = blueprint.getSizeX();
+        int sizeY = blueprint.getSizeY();
+        int sizeZ = blueprint.getSizeZ();
+        if (sizeX <= 0 || sizeY <= 0 || sizeZ <= 0) {
+            sizeX = Math.abs(blueprint.getCorner1().getBlockX() - blueprint.getCorner2().getBlockX()) + 1;
+            sizeY = Math.abs(blueprint.getCorner1().getBlockY() - blueprint.getCorner2().getBlockY()) + 1;
+            sizeZ = Math.abs(blueprint.getCorner1().getBlockZ() - blueprint.getCorner2().getBlockZ()) + 1;
         }
-
-        if (byChunk.isEmpty()) {
+        int maxX = baseX + sizeX - 1;
+        int maxY = Math.min(world.getMaxHeight() - 1, baseY + sizeY - 1);
+        int maxZ = baseZ + sizeZ - 1;
+        int minY = Math.max(world.getMinHeight(), baseY);
+        if (maxX < baseX || maxZ < baseZ || maxY < minY) {
             FoliaManager.runGlobal(done);
             return;
         }
 
-        AtomicInteger remaining = new AtomicInteger(byChunk.size());
-        for (Map.Entry<Long, List<PasteBlock>> chunk : byChunk.entrySet()) {
-            int chunkX = (int) (chunk.getKey() >> 32);
-            int chunkZ = (int) chunk.getKey().longValue();
-            List<PasteBlock> blocks = chunk.getValue();
-            plugin.getServer().getRegionScheduler().execute(plugin, world, chunkX, chunkZ, () -> {
-                try {
-                    for (PasteBlock block : blocks) {
-                        if (block.y < world.getMinHeight() || block.y >= world.getMaxHeight()) {
-                            continue;
+        BlockData air = Material.AIR.createBlockData();
+        Map<Blueprint.Pos, BlockData> blocks = blueprint.getBlocks();
+        int minChunkX = baseX >> 4;
+        int maxChunkX = maxX >> 4;
+        int minChunkZ = baseZ >> 4;
+        int maxChunkZ = maxZ >> 4;
+        AtomicInteger remaining = new AtomicInteger((maxChunkX - minChunkX + 1) * (maxChunkZ - minChunkZ + 1));
+        for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+            for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+                int cx = chunkX;
+                int cz = chunkZ;
+                plugin.getServer().getRegionScheduler().execute(plugin, world, cx, cz, () -> {
+                    try {
+                        int startX = Math.max(baseX, cx << 4);
+                        int endX = Math.min(maxX, (cx << 4) + 15);
+                        int startZ = Math.max(baseZ, cz << 4);
+                        int endZ = Math.min(maxZ, (cz << 4) + 15);
+                        for (int x = startX; x <= endX; x++) {
+                            for (int z = startZ; z <= endZ; z++) {
+                                for (int y = minY; y <= maxY; y++) {
+                                    BlockData data = blocks.get(new Blueprint.Pos(x - baseX, y - baseY, z - baseZ));
+                                    world.getBlockAt(x, y, z).setBlockData(data == null ? air : data.clone(), false);
+                                }
+                            }
                         }
-                        world.getBlockAt(block.x, block.y, block.z).setBlockData(block.data, false);
+                    } catch (Exception e) {
+                        plugin.getLogger().warning("Blueprint paste " + cx + "," + cz + ": " + e.getMessage());
+                    } finally {
+                        if (remaining.decrementAndGet() == 0) {
+                            FoliaManager.runGlobal(done);
+                        }
                     }
-                } catch (Exception e) {
-                    plugin.getLogger().warning("Blueprint paste " + chunkX + "," + chunkZ + ": " + e.getMessage());
-                } finally {
-                    if (remaining.decrementAndGet() == 0) {
-                        FoliaManager.runGlobal(done);
-                    }
-                }
-            });
+                });
+            }
         }
     }
 
-    private long chunkKey(int chunkX, int chunkZ) {
-        return ((long) chunkX << 32) | (chunkZ & 0xffffffffL);
-    }
-
-    private record PasteBlock(int x, int y, int z, BlockData data) {
+    public CompletableFuture<Void> delete(String name) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        FoliaManager.runAsync(() -> {
+            try {
+                synchronized (this) {
+                    Files.deleteIfExists(file(name).toPath());
+                    Map<String, JsonObject> updated = new HashMap<>(blueprints);
+                    updated.remove(name);
+                    blueprints = Map.copyOf(updated);
+                }
+                future.complete(null);
+            } catch (IOException e) {
+                future.completeExceptionally(e);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<Void> save(String name, Blueprint blueprint) {
@@ -203,6 +230,11 @@ public class BlueprintManager {
         JsonObject json = new JsonObject();
         json.add("corner1", location(blueprint.getCorner1()));
         json.add("corner2", location(blueprint.getCorner2()));
+        JsonObject size = new JsonObject();
+        size.addProperty("x", blueprint.getSizeX());
+        size.addProperty("y", blueprint.getSizeY());
+        size.addProperty("z", blueprint.getSizeZ());
+        json.add("size", size);
 
         JsonArray blocks = new JsonArray();
         for (Map.Entry<Blueprint.Pos, BlockData> entry : blueprint.getBlocks().entrySet()) {

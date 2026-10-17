@@ -1,61 +1,40 @@
 package dev.rajce.ketchupZombies.managers;
 
-import dev.lupino1.command.CommandContext;
 import dev.lupino1.command.LPCommand;
 import dev.rajce.ketchupZombies.KetchupZombies;
-import dev.rajce.ketchupZombies.models.Blueprint;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
+import dev.rajce.ketchupZombies.editor.BlueprintTest;
+import dev.rajce.ketchupZombies.editor.Editor;
 
 public class CommandManager {
 
-    private static final int SPAN_XZ = 156;
-    private static final int SPAN_Y = 32;
-
     private final KetchupZombies plugin;
-    private final BlueprintManager blueprints;
-    private volatile Blueprint clipboard;
+    private final Editor editor;
+    private final BlueprintTest test;
 
-    public CommandManager(KetchupZombies plugin, BlueprintManager blueprints) {
+    public CommandManager(KetchupZombies plugin, Editor editor, BlueprintTest test) {
         this.plugin = plugin;
-        this.blueprints = blueprints;
+        this.editor = editor;
+        this.test = test;
     }
 
     public void register() {
-        LPCommand.create(plugin, "kz")
+        LPCommand.create(plugin, "ketchupzombies")
+                .aliases("kz")
                 .playerOnly()
-                .description("Blueprint test")
-                .usage("/kz copy|paste")
-                .sub("copy", sub -> sub.playerOnly().execute(this::copy))
-                .sub("paste", sub -> sub.playerOnly().execute(this::paste))
+                .description("Arena editor")
+                .usage("/ketchupzombies createarena|editarena <name>|test")
+                .sub("createarena", sub -> sub.playerOnly().execute(ctx -> editor.openCreate(ctx.player())))
+                .sub("test", sub -> sub.playerOnly().execute(ctx -> test.open(ctx.player())))
+                .sub("editarena", sub -> sub.playerOnly()
+                        .tabComplete(ctx -> editor.completeArenas())
+                        .execute(ctx -> {
+                            String name = ctx.arg(0);
+                            if (name == null || name.isBlank()) {
+                                ctx.reply("&cUsage: /ketchupzombies editarena <name>");
+                                return;
+                            }
+                            editor.openEdit(ctx.player(), name);
+                        }))
                 .register();
-    }
-
-    private void copy(CommandContext ctx) {
-        Player player = ctx.player();
-        World world = player.getWorld();
-        int x = player.getLocation().getBlockX();
-        int y = player.getLocation().getBlockY();
-        int z = player.getLocation().getBlockZ();
-        int halfXz = SPAN_XZ / 2;
-        int halfY = SPAN_Y / 2;
-
-        Blueprint blueprint = new Blueprint(new Location(world, x - halfXz, y - halfY, z - halfXz), new Location(world, x + halfXz - 1, y + halfY - 1, z + halfXz - 1));
-        ctx.reply("Copying " + SPAN_XZ + "x" + SPAN_Y + "x" + SPAN_XZ + "...");
-        blueprints.capture(blueprint).thenAccept(captured -> {
-            clipboard = captured;
-            ctx.reply("Copied blocks: " + captured.getBlocks().size());
-        });
-    }
-
-    private void paste(CommandContext ctx) {
-        Blueprint blueprint = clipboard;
-        if (blueprint == null || blueprint.getBlocks().isEmpty()) {
-            ctx.reply("Nothing to paste.");
-            return;
-        }
-        ctx.reply("Pasting...");
-        blueprints.paste(blueprint, ctx.player().getLocation(), () -> ctx.reply("Pasted."));
     }
 }
