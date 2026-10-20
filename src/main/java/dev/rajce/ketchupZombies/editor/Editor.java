@@ -5,12 +5,14 @@ import dev.lupino1.messages.ColorParser;
 import dev.rajce.ketchupZombies.KetchupZombies;
 import dev.rajce.ketchupZombies.managers.ArenaFiles;
 import dev.rajce.ketchupZombies.managers.BlueprintManager;
+import dev.rajce.ketchupZombies.managers.HologramManager;
 import dev.rajce.ketchupZombies.models.ArenaData;
 import dev.rajce.ketchupZombies.models.ArenaDoor;
 import dev.rajce.ketchupZombies.models.ArenaSection;
 import dev.rajce.ketchupZombies.models.ArenaWindow;
 import dev.rajce.ketchupZombies.models.Blueprint;
 import dev.rajce.ketchupZombies.models.BlockPoint;
+import dev.rajce.ketchupZombies.models.FinePoint;
 import dev.rajce.ketchupZombies.models.SpotKind;
 import dev.rajce.ketchupZombies.models.WindowBlock;
 import org.bukkit.Location;
@@ -25,6 +27,7 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -35,20 +38,28 @@ public final class Editor {
     private final KetchupZombies plugin;
     private final BlueprintManager blueprints;
     private final ArenaFiles arenas;
+    private final HologramManager holograms;
     private final ArenaMenus menus;
+    private final ShopStock shopStock;
     private final ConcurrentHashMap<UUID, EditorSession> sessions = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, UUID> editors = new ConcurrentHashMap<>();
     private final java.util.Set<String> creating = ConcurrentHashMap.newKeySet();
 
-    public Editor(KetchupZombies plugin, BlueprintManager blueprints, ArenaFiles arenas) {
+    public Editor(KetchupZombies plugin, BlueprintManager blueprints, ArenaFiles arenas, HologramManager holograms) {
         this.plugin = plugin;
         this.blueprints = blueprints;
         this.arenas = arenas;
+        this.holograms = holograms;
         this.menus = new ArenaMenus(this);
+        this.shopStock = new ShopStock(this);
     }
 
     public KetchupZombies plugin() {
         return plugin;
+    }
+
+    public boolean inSession(Player player) {
+        return sessions.containsKey(player.getUniqueId());
     }
 
     public List<String> completeArenas() {
@@ -95,7 +106,14 @@ public final class Editor {
         }
         EditorSession existing = sessions.get(player.getUniqueId());
         if (existing != null && existing.kind() == EditorSession.Kind.CREATE) {
-            reply(player, "&cSave the arena you are creating first.");
+            if (existing.saving()) {
+                reply(player, "&cSave already running.");
+                return;
+            }
+            FoliaManager.runAsync(() -> {
+                boolean exists = arenas.fileExists(name);
+                FoliaManager.runAtEntity(player, () -> openEditAfterCreate(player, name, exists));
+            });
             return;
         }
         if (existing != null && existing.kind() == EditorSession.Kind.EDIT) {
@@ -113,7 +131,33 @@ public final class Editor {
             reply(player, "&cSomeone else is editing that arena.");
             return;
         }
-        reply(player, "&7Loading arena...");
+        beginEdit(player, name);
+    }
+
+    private void openEditAfterCreate(Player player, String name, boolean exists) {
+        if (!player.isOnline()) {
+            return;
+        }
+        EditorSession existing = sessions.get(player.getUniqueId());
+        if (existing == null || existing.kind() != EditorSession.Kind.CREATE) {
+            beginEdit(player, name);
+            return;
+        }
+        if (!exists) {
+            reply(player, "&cArena " + name + " does not exist.");
+            return;
+        }
+        UUID holder = editors.get(name);
+        if (holder != null && !holder.equals(player.getUniqueId())) {
+            reply(player, "&cSomeone else is editing that arena.");
+            return;
+        }
+        sessions.remove(player.getUniqueId());
+        beginEdit(player, name);
+    }
+
+    private void beginEdit(Player player, String name) {
+        info(player, "editor.loading");
         arenas.load(name).whenComplete((data, error) -> FoliaManager.runAtEntity(player, () -> finishOpen(player, name, data, error)));
     }
 
@@ -173,7 +217,7 @@ public final class Editor {
         }
         session.saving(true);
         player.closeInventory();
-        reply(player, "&7Saving " + name + "...");
+        info(player, "editor.saving", Map.of("name", name));
         FoliaManager.runAsync(() -> {
             if (!creating.add(name)) {
                 finishCreateFailure(player, session, "&cThat arena is already being saved.");
@@ -196,9 +240,10 @@ public final class Editor {
                         }
                         FoliaManager.runAtEntity(player, () -> {
                             sessions.remove(player.getUniqueId());
-                            if (player.isOnline()) {
-                                reply(player, "&aSaved blueprint and arena file for &f" + name + "&a.");
+                            if (!player.isOnline()) {
+                                return;
                             }
+                            info(player, "editor.saved-create", Map.of("name", name));
                         });
                     });
         });
@@ -246,10 +291,16 @@ public final class Editor {
         }
         ArenaData data = session.data();
         data.sections().remove(name);
-        data.doors().entrySet().removeIf(entry -> name.equals(entry.getValue().from()) || name.equals(entry.getValue().to()));
+        data.doors().entrySet().removeIf(entry -> {
+            boolean hit = name.equals(entry.getValue().from()) || name.equals(entry.getValue().to());
+            if (hit) {
+                clearDoor(data.name(), entry.getValue());
+            }
+            return hit;
+        });
         data.windows().removeIf(window -> name.equals(window.section()));
         persist(session);
-        reply(player, "&aRemoved section &f" + name + "&a.");
+        info(player, "editor.removed-section", Map.of("name", name));
         menus.sections(player, session);
     }
 
@@ -310,7 +361,7 @@ public final class Editor {
         session.data().sections().put(name, ArenaSection.of(first, second));
         session.clearSectionDraft();
         persist(session);
-        reply(player, "&aSection &f" + name + "&a saved.");
+        info(player, "editor.saved-section", Map.of("name", name));
         showSections(player);
     }
 
@@ -362,7 +413,7 @@ public final class Editor {
             reply(player, "&cSelect exactly two sections.");
             return;
         }
-        ArenaDoor door = new ArenaDoor(selected.get(0), selected.get(1), 0, 0);
+        ArenaDoor door = new ArenaDoor(selected.get(0), selected.get(1));
         if (session.data().doors().containsKey(door.key())) {
             reply(player, "&cThat door already exists.");
             return;
@@ -370,7 +421,7 @@ public final class Editor {
         session.data().doors().put(door.key(), door);
         session.clearSelected();
         persist(session);
-        reply(player, "&aDoor created. Left-click it to add blocks and the price hologram.");
+        info(player, "editor.door-created");
         showDoors(player);
     }
 
@@ -380,9 +431,12 @@ public final class Editor {
             return;
         }
         if (click == MenuClick.RIGHT) {
-            session.data().doors().remove(key);
+            ArenaDoor removed = session.data().doors().remove(key);
+            if (removed != null) {
+                clearDoor(session.data().name(), removed);
+            }
             persist(session);
-            reply(player, "&aRemoved door.");
+            info(player, "editor.removed-door");
             menus.doors(player, session);
             return;
         }
@@ -410,7 +464,7 @@ public final class Editor {
         if (click == MenuClick.RIGHT) {
             door.clearBlocks();
             persist(session);
-            reply(player, "&aCleared door blocks.");
+            info(player, "editor.cleared-door-blocks");
             menus.doorEdit(player, session);
             return;
         }
@@ -418,11 +472,11 @@ public final class Editor {
             session.mode(EditMode.DOOR_BLOCKS);
             session.screen(EditorSession.Screen.DOOR_EDIT);
             player.closeInventory();
-            reply(player, "&ePlace blocks. Each placed block is part of the door. Type &fleave &eto stop.");
+            info(player, "editor.place-door-blocks");
         }
     }
 
-    public void clickDoorHologram(Player player, MenuClick click) {
+    public void clickDoorPrice(Player player, MenuClick click) {
         EditorSession session = editSession(player);
         if (session == null) {
             return;
@@ -433,13 +487,44 @@ public final class Editor {
             return;
         }
         if (click == MenuClick.RIGHT) {
-            door.hologram(null);
+            door.price(null);
+            persist(session);
+            showDoor(session.data().name(), door);
+            menus.doorEdit(player, session);
+            return;
+        }
+        if (click == MenuClick.LEFT) {
+            session.mode(EditMode.PRICE);
+            session.screen(EditorSession.Screen.DOOR_EDIT);
+            player.closeInventory();
+            info(player, "editor.type-price");
+        }
+    }
+
+    public void clickDoorHologram(Player player, int side, MenuClick click) {
+        EditorSession session = editSession(player);
+        if (session == null) {
+            return;
+        }
+        ArenaDoor door = door(session);
+        if (door == null) {
+            showDoors(player);
+            return;
+        }
+        if (click == MenuClick.RIGHT) {
+            FinePoint point = side == 0 ? door.hologramA() : door.hologramB();
+            if (side == 0) {
+                door.hologramA(null);
+            } else {
+                door.hologramB(null);
+            }
+            holograms.clearAll(session.data().name(), point);
             persist(session);
             menus.doorEdit(player, session);
             return;
         }
         if (click == MenuClick.LEFT) {
-            armMark(player, session, MarkTarget.DOOR_HOLOGRAM, EditorSession.Screen.DOOR_EDIT);
+            armMark(player, session, side == 0 ? MarkTarget.DOOR_HOLOGRAM_A : MarkTarget.DOOR_HOLOGRAM_B, EditorSession.Screen.DOOR_EDIT);
         }
     }
 
@@ -469,31 +554,43 @@ public final class Editor {
         if (session == null) {
             return;
         }
-        if (session.data().sections().isEmpty()) {
-            reply(player, "&cCreate a section first.");
-            return;
-        }
-        session.clearWindowDraft();
-        session.mode(EditMode.NONE);
-        session.screen(EditorSession.Screen.WINDOW_FORM);
-        menus.windowForm(player, session);
+        session.data().windows().add(new ArenaWindow());
+        persist(session);
+        info(player, "editor.window-created");
+        showWindows(player);
     }
 
     public void clickWindow(Player player, int index, MenuClick click) {
-        if (click != MenuClick.RIGHT) {
-            return;
-        }
         EditorSession session = editSession(player);
         if (session == null) {
             return;
         }
         List<ArenaWindow> windows = session.data().windows();
-        if (index >= 0 && index < windows.size()) {
+        if (index < 0 || index >= windows.size()) {
+            menus.windows(player, session);
+            return;
+        }
+        if (click == MenuClick.RIGHT) {
             windows.remove(index);
             persist(session);
-            reply(player, "&aRemoved window.");
+            info(player, "editor.removed-window");
+            menus.windows(player, session);
+            return;
         }
-        menus.windows(player, session);
+        if (click == MenuClick.LEFT) {
+            openWindow(player, session, index);
+        }
+    }
+
+    private void openWindow(Player player, EditorSession session, int index) {
+        ArenaWindow window = session.data().windows().get(index);
+        session.windowIndex(index);
+        session.windowSection(window.section());
+        session.windowCorner1(location(window.corner1() != null ? window.corner1() : window.faceMin()));
+        session.windowCorner2(location(window.corner2() != null ? window.corner2() : window.faceMax()));
+        session.mode(EditMode.NONE);
+        session.screen(EditorSession.Screen.WINDOW_FORM);
+        menus.windowForm(player, session);
     }
 
     public void clickWindowCorner(Player player, int index, MenuClick click) {
@@ -501,12 +598,25 @@ public final class Editor {
         if (session == null) {
             return;
         }
+        ArenaWindow window = window(session);
+        if (window == null) {
+            showWindows(player);
+            return;
+        }
+        if (session.windowSaving()) {
+            reply(player, "&cSave already running.");
+            return;
+        }
         if (click == MenuClick.RIGHT) {
             if (index == 1) {
+                window.corner1(null);
                 session.windowCorner1(null);
             } else {
+                window.corner2(null);
                 session.windowCorner2(null);
             }
+            window.clearFace();
+            persist(session);
             menus.windowForm(player, session);
             return;
         }
@@ -520,8 +630,15 @@ public final class Editor {
         if (session == null) {
             return;
         }
+        ArenaWindow window = window(session);
+        if (window == null) {
+            showWindows(player);
+            return;
+        }
         if (click == MenuClick.RIGHT) {
+            window.section(null);
             session.windowSection(null);
+            persist(session);
             menus.windowForm(player, session);
             return;
         }
@@ -536,45 +653,95 @@ public final class Editor {
         if (session == null) {
             return;
         }
-        session.windowSection(section);
-        session.screen(EditorSession.Screen.WINDOW_FORM);
-        menus.windowForm(player, session);
-    }
-
-    public void saveWindow(Player player) {
-        EditorSession session = editSession(player);
-        if (session == null) {
-            return;
-        }
-        Location first = session.windowCorner1();
-        Location second = session.windowCorner2();
-        String section = session.windowSection();
-        if (first == null || second == null || section == null) {
-            reply(player, "&cSet both corners and a section first.");
-            return;
-        }
-        if (!sameWorld(first, second)) {
-            reply(player, "&cCorners must be in the same world.");
-            return;
-        }
-        String size = WindowFace.sizeOf(first, second);
-        if (size == null) {
-            reply(player, "&cThe area must be a flat 2x2 or 2x3.");
+        ArenaWindow window = window(session);
+        if (window == null) {
+            showWindows(player);
             return;
         }
         if (!session.data().sections().containsKey(section)) {
             reply(player, "&cThat section no longer exists.");
             return;
         }
-        World world = first.getWorld();
-        BlockPoint min = WindowFace.min(first, second);
-        BlockPoint max = WindowFace.max(first, second);
-        session.clearWindowDraft();
-        reply(player, "&7Saving window...");
-        snapshotWindow(player, session, world, size, section, min, max);
+        window.section(section);
+        session.windowSection(section);
+        persist(session);
+        session.screen(EditorSession.Screen.WINDOW_FORM);
+        menus.windowForm(player, session);
     }
 
-    private void snapshotWindow(Player player, EditorSession session, World world, String size, String section, BlockPoint min, BlockPoint max) {
+    public void clickWindowSpawn(Player player, MenuClick click) {
+        EditorSession session = editSession(player);
+        if (session == null) {
+            return;
+        }
+        ArenaWindow window = window(session);
+        if (window == null) {
+            showWindows(player);
+            return;
+        }
+        if (click == MenuClick.RIGHT) {
+            window.spawn(null);
+            persist(session);
+            menus.windowForm(player, session);
+            return;
+        }
+        if (click == MenuClick.LEFT) {
+            armMark(player, session, MarkTarget.WINDOW_SPAWN, EditorSession.Screen.WINDOW_FORM);
+        }
+    }
+
+    private void storeWindowCorner(Player player, EditorSession session, Location location, boolean first) {
+        ArenaWindow window = window(session);
+        if (window == null) {
+            session.mode(EditMode.NONE);
+            later(player, "&cThat window no longer exists.", () -> menus.windows(player, session));
+            return;
+        }
+        if (session.windowSaving()) {
+            later(player, "&cSave already running. Left-click again, or type &fleave&e.", null);
+            return;
+        }
+        BlockPoint other = first ? window.corner2() : window.corner1();
+        if (other != null && location.getWorld() != null && !location.getWorld().getName().equals(other.world())) {
+            later(player, "&cCorners must be in the same world. Left-click again, or type &fleave&e.", null);
+            return;
+        }
+        BlockPoint point = BlockPoint.of(location);
+        if (first) {
+            window.corner1(point);
+            session.windowCorner1(location);
+        } else {
+            window.corner2(point);
+            session.windowCorner2(location);
+        }
+        session.mode(EditMode.NONE);
+        if (window.corner1() == null || window.corner2() == null) {
+            window.clearFace();
+            persist(session);
+            laterInfo(player, "editor.corner-set", Map.of("n", first ? "1" : "2", "pos", format(location)), () -> menus.windowForm(player, session));
+            return;
+        }
+        Location firstLocation = location(window.corner1());
+        Location secondLocation = location(window.corner2());
+        if (firstLocation == null || secondLocation == null) {
+            window.clearFace();
+            persist(session);
+            later(player, "&cThat world is not loaded.", () -> menus.windowForm(player, session));
+            return;
+        }
+        String size = WindowFace.sizeOf(firstLocation, secondLocation);
+        if (size == null) {
+            window.clearFace();
+            persist(session);
+            later(player, "&cThe area must be a flat 2x2 or 2x3.", () -> menus.windowForm(player, session));
+            return;
+        }
+        session.windowSaving(true);
+        info(player, "editor.saving-window");
+        snapshotWindow(player, session, window, firstLocation.getWorld(), size, WindowFace.min(firstLocation, secondLocation), WindowFace.max(firstLocation, secondLocation));
+    }
+
+    private void snapshotWindow(Player player, EditorSession session, ArenaWindow window, World world, String size, BlockPoint min, BlockPoint max) {
         List<BlockPoint> positions = WindowFace.positions(min, max);
         Map<Long, List<Integer>> chunks = new LinkedHashMap<>();
         for (int index = 0; index < positions.size(); index++) {
@@ -603,24 +770,25 @@ public final class Editor {
                         for (CapturedBlock captured : ordered) {
                             blocks.add(captured.block());
                         }
-                        FoliaManager.runAtEntity(player, () -> finishWindow(player, session, size, section, min, max, blocks));
+                        FoliaManager.runAtEntity(player, () -> finishWindow(player, session, window, size, min, max, blocks));
                     }
                 }
             });
         }
     }
 
-    private void finishWindow(Player player, EditorSession session, String size, String section, BlockPoint min, BlockPoint max, List<WindowBlock> blocks) {
-        if (sessions.get(player.getUniqueId()) != session || session.data() == null) {
+    private void finishWindow(Player player, EditorSession session, ArenaWindow window, String size, BlockPoint min, BlockPoint max, List<WindowBlock> blocks) {
+        session.windowSaving(false);
+        if (sessions.get(player.getUniqueId()) != session || session.data() == null || !session.data().windows().contains(window)) {
             return;
         }
-        session.data().windows().add(new ArenaWindow(size, section, min, max, null, blocks));
+        window.applyFace(size, min, max, blocks);
         persist(session);
         if (!player.isOnline()) {
             return;
         }
-        reply(player, "&aWindow saved.");
-        showWindows(player);
+        info(player, "editor.window-saved");
+        openWindow(player, session, session.data().windows().indexOf(window));
     }
 
     private static long chunkKey(int chunkX, int chunkZ) {
@@ -648,18 +816,30 @@ public final class Editor {
     }
 
     public void clickSpot(Player player, SpotKind kind, int index, MenuClick click) {
-        if (click != MenuClick.RIGHT) {
-            return;
-        }
         EditorSession session = editSession(player);
         if (session == null) {
             return;
         }
-        List<BlockPoint> points = session.data().spots(kind);
+        if (click == MenuClick.LEFT && kind == SpotKind.ARMOR) {
+            session.spotIndex(index);
+            shopStock.open(player, session);
+            return;
+        }
+        if (click == MenuClick.LEFT && kind == SpotKind.WEAPONS) {
+            session.spotIndex(index);
+            shopStock.openWeapons(player, session);
+            return;
+        }
+        if (click != MenuClick.RIGHT) {
+            return;
+        }
+        List<FinePoint> points = session.data().spots(kind);
         if (index >= 0 && index < points.size()) {
-            points.remove(index);
+            FinePoint removed = points.remove(index);
+            session.data().forgetSpot(removed);
+            holograms.clearAll(session.data().name(), removed);
             persist(session);
-            reply(player, "&aRemoved.");
+            info(player, "editor.removed");
         }
         menus.spots(player, session, kind);
     }
@@ -673,10 +853,11 @@ public final class Editor {
             return;
         }
         String name = session.data().name();
+        holograms.clearKnown(session.data());
         sessions.remove(player.getUniqueId());
         editors.remove(name, player.getUniqueId());
         player.closeInventory();
-        reply(player, "&7Deleting " + name + "...");
+        info(player, "editor.deleting", Map.of("name", name));
         blueprints.delete(name).thenCompose(ignored -> arenas.delete(name)).whenComplete((ignored, error) -> FoliaManager.runAtEntity(player, () -> {
             if (!player.isOnline()) {
                 return;
@@ -686,7 +867,7 @@ public final class Editor {
                 reply(player, "&cDelete failed. Check console.");
                 return;
             }
-            reply(player, "&aDeleted arena and blueprint &f" + name + "&a.");
+            info(player, "editor.deleted", Map.of("name", name));
         }));
     }
 
@@ -696,7 +877,7 @@ public final class Editor {
             editors.remove(session.data().name(), player.getUniqueId());
         }
         player.closeInventory();
-        reply(player, "&7Closed the arena editor.");
+        info(player, "editor.closed");
     }
 
     public void onQuit(Player player) {
@@ -712,23 +893,41 @@ public final class Editor {
             return;
         }
         if ("leave".equalsIgnoreCase(text)) {
+            EditMode mode = session.mode();
             session.mode(EditMode.NONE);
-            later(player, "&7Left edit mode.", () -> openScreen(player, session));
+            if (mode == EditMode.ARMOR_PRICE) {
+                laterInfo(player, "editor.left-mode", null, () -> shopStock.open(player, session));
+                return;
+            }
+            laterInfo(player, "editor.left-mode", null, () -> openScreen(player, session));
+            return;
+        }
+        if (session.mode() == EditMode.ARMOR_PRICE) {
+            shopStock.onPrice(player, session, text);
             return;
         }
         if (session.mode() == EditMode.NAME) {
             onName(player, session, text);
             return;
         }
+        if (session.mode() == EditMode.PRICE) {
+            onPrice(player, session, text);
+            return;
+        }
         if (session.mode() == EditMode.MARK) {
-            String hint = isHologram(session.markTarget())
-                    ? "&eStand on the spot and left-click. Type &fleave &eto cancel."
-                    : "&eLeft-click a block, or type &fleave&e.";
-            later(player, hint, null);
+            String hint;
+            if (session.markTarget() == MarkTarget.WINDOW_SPAWN) {
+                hint = "editor.mark-spawn";
+            } else if (isHologram(session.markTarget())) {
+                hint = "editor.mark-hologram";
+            } else {
+                hint = "editor.mark-block";
+            }
+            laterInfo(player, hint, null, null);
             return;
         }
         if (session.mode() == EditMode.DOOR_BLOCKS) {
-            later(player, "&ePlace blocks, or type &fleave&e.", null);
+            laterInfo(player, "editor.place-blocks-hint", null, null);
         }
     }
 
@@ -750,15 +949,9 @@ public final class Editor {
             case CREATE_CORNER_2 -> setCorner(player, session, location, session.corner1(), false, true);
             case SECTION_CORNER_1 -> setCorner(player, session, location, session.sectionCorner2(), true, false);
             case SECTION_CORNER_2 -> setCorner(player, session, location, session.sectionCorner1(), false, false);
-            case WINDOW_CORNER_1 -> {
-                session.windowCorner1(location);
-                finishMark(player, session, "&aCorner 1 set to &f" + format(location) + "&a.");
-            }
-            case WINDOW_CORNER_2 -> {
-                session.windowCorner2(location);
-                finishMark(player, session, "&aCorner 2 set to &f" + format(location) + "&a.");
-            }
-            case SPOT, DOOR_HOLOGRAM -> confirmHologram(player);
+            case WINDOW_CORNER_1 -> storeWindowCorner(player, session, location, true);
+            case WINDOW_CORNER_2 -> storeWindowCorner(player, session, location, false);
+            case SPOT, DOOR_HOLOGRAM_A, DOOR_HOLOGRAM_B, WINDOW_SPAWN -> confirmHologram(player);
         }
     }
 
@@ -771,10 +964,14 @@ public final class Editor {
             return;
         }
         if (session.markTarget() == MarkTarget.SPOT) {
-            finishSpot(player, session, player.getLocation());
+            finishSpot(player, session, player.getEyeLocation());
             return;
         }
-        finishHologram(player, session, player.getLocation());
+        if (session.markTarget() == MarkTarget.WINDOW_SPAWN) {
+            finishWindowSpawn(player, session, player.getLocation());
+            return;
+        }
+        finishHologram(player, session, player.getEyeLocation());
     }
 
     public void placeDoorBlock(Player player, Block block) {
@@ -790,7 +987,7 @@ public final class Editor {
             return;
         }
         persist(session);
-        reply(player, "&aDoor block added. Place another, or type &fleave&a.");
+        info(player, "editor.door-block-added");
     }
 
     private void finishOpen(Player player, String name, ArenaData data, Throwable error) {
@@ -837,12 +1034,32 @@ public final class Editor {
             }
             session.sectionName(text);
             session.mode(EditMode.NONE);
-            later(player, "&aName set to &f" + text + "&a.", () -> menus.sectionForm(player, session));
+            laterInfo(player, "editor.name-set", Map.of("name", text), () -> menus.sectionForm(player, session));
             return;
         }
         session.createName(text);
         session.mode(EditMode.NONE);
-        later(player, "&aName set to &f" + text + "&a.", () -> menus.create(player, session));
+        laterInfo(player, "editor.name-set", Map.of("name", text), () -> menus.create(player, session));
+    }
+
+    private void onPrice(Player player, EditorSession session, String text) {
+        if (!text.matches("[0-9]{1,9}")) {
+            later(player, "&cType a whole number, or &fleave&c.", null);
+            return;
+        }
+        int price = Integer.parseInt(text);
+        session.mode(EditMode.NONE);
+        laterInfo(player, "editor.price-set", Map.of("price", Integer.toString(price)), () -> {
+            ArenaDoor door = door(session);
+            if (door == null) {
+                menus.doors(player, session);
+                return;
+            }
+            door.price(price);
+            persist(session);
+            showDoor(session.data().name(), door);
+            menus.doorEdit(player, session);
+        });
     }
 
     private void setCorner(Player player, EditorSession session, Location location, Location other, boolean first, boolean create) {
@@ -861,12 +1078,12 @@ public final class Editor {
         } else {
             session.sectionCorner2(location);
         }
-        finishMark(player, session, "&aCorner " + (first ? 1 : 2) + " set to &f" + format(location) + "&a.");
+        finishMark(player, session, first ? "1" : "2", location);
     }
 
-    private void finishMark(Player player, EditorSession session, String message) {
+    private void finishMark(Player player, EditorSession session, String number, Location location) {
         session.mode(EditMode.NONE);
-        later(player, message, () -> openScreen(player, session));
+        laterInfo(player, "editor.corner-set", Map.of("n", number, "pos", format(location)), () -> openScreen(player, session));
     }
 
     private void finishSpot(Player player, EditorSession session, Location location) {
@@ -876,15 +1093,19 @@ public final class Editor {
             later(player, "&cThat spot could not be saved.", () -> openScreen(player, session));
             return;
         }
-        List<BlockPoint> points = session.data().spots(kind);
+        List<FinePoint> points = session.data().spots(kind);
         if (kind == SpotKind.POWER) {
+            for (FinePoint old : List.copyOf(points)) {
+                holograms.clearAll(session.data().name(), old);
+            }
             points.clear();
         }
-        points.add(BlockPoint.of(location));
+        FinePoint point = FinePoint.of(location);
+        points.add(point);
         session.mode(EditMode.NONE);
         persist(session);
-        String message = kind == SpotKind.POWER ? "&aPower hologram set." : "&aHologram coordinate saved.";
-        later(player, message, () -> menus.spots(player, session, kind));
+        holograms.showSpotAll(session.data().name(), kind, point);
+        laterInfo(player, kind == SpotKind.POWER ? "editor.power-set" : "editor.hologram-saved", Map.of("pos", point.format()), () -> menus.spots(player, session, kind));
     }
 
     private void finishHologram(Player player, EditorSession session, Location location) {
@@ -894,16 +1115,36 @@ public final class Editor {
             later(player, "&cThat door no longer exists.", () -> menus.doors(player, session));
             return;
         }
-        door.hologram(BlockPoint.of(location));
+        boolean second = session.markTarget() == MarkTarget.DOOR_HOLOGRAM_B;
+        FinePoint point = FinePoint.of(location);
+        if (second) {
+            door.hologramB(point);
+        } else {
+            door.hologramA(point);
+        }
         persist(session);
-        later(player, "&aPrice hologram set to &f" + format(location) + "&a.", () -> menus.doorEdit(player, session));
+        holograms.showDoorAll(session.data().name(), door.price(), point);
+        laterInfo(player, "editor.door-hologram-set", Map.of("n", second ? "2" : "1", "pos", point.format()), () -> menus.doorEdit(player, session));
+    }
+
+    private void finishWindowSpawn(Player player, EditorSession session, Location location) {
+        ArenaWindow window = window(session);
+        session.mode(EditMode.NONE);
+        if (window == null || location.getWorld() == null) {
+            later(player, "&cThat window no longer exists.", () -> menus.windows(player, session));
+            return;
+        }
+        FinePoint point = FinePoint.of(location);
+        window.spawn(point);
+        persist(session);
+        laterInfo(player, "editor.spawn-set", Map.of("pos", point.format()), () -> menus.windowForm(player, session));
     }
 
     private void armName(Player player, EditorSession session, EditorSession.Screen screen) {
         session.mode(EditMode.NAME);
         session.screen(screen);
         player.closeInventory();
-        reply(player, "&eType a name. Letters and numbers only, or &fleave&e.");
+        info(player, "editor.type-name");
     }
 
     private void armMark(Player player, EditorSession session, MarkTarget target, EditorSession.Screen screen) {
@@ -911,15 +1152,19 @@ public final class Editor {
         session.markTarget(target);
         session.screen(screen);
         player.closeInventory();
-        if (isHologram(target)) {
-            reply(player, "&eStand where the hologram should be and left-click. Type &fleave &eto cancel.");
+        if (target == MarkTarget.WINDOW_SPAWN) {
+            info(player, "editor.mark-spawn");
             return;
         }
-        reply(player, "&eLeft-click a block, or type &fleave&e.");
+        if (isHologram(target)) {
+            info(player, "editor.mark-hologram");
+            return;
+        }
+        info(player, "editor.mark-block");
     }
 
     private static boolean isHologram(MarkTarget target) {
-        return target == MarkTarget.SPOT || target == MarkTarget.DOOR_HOLOGRAM;
+        return target == MarkTarget.SPOT || target == MarkTarget.DOOR_HOLOGRAM_A || target == MarkTarget.DOOR_HOLOGRAM_B || target == MarkTarget.WINDOW_SPAWN;
     }
 
     private void openScreen(Player player, EditorSession session) {
@@ -944,6 +1189,29 @@ public final class Editor {
         return session.data().doors().get(session.doorKey());
     }
 
+    private ArenaWindow window(EditorSession session) {
+        if (session.data() == null) {
+            return null;
+        }
+        int index = session.windowIndex();
+        List<ArenaWindow> windows = session.data().windows();
+        if (index < 0 || index >= windows.size()) {
+            return null;
+        }
+        return windows.get(index);
+    }
+
+    private Location location(BlockPoint point) {
+        if (point == null) {
+            return null;
+        }
+        World world = plugin.getServer().getWorld(point.world());
+        if (world == null) {
+            return null;
+        }
+        return new Location(world, point.x(), point.y(), point.z());
+    }
+
     private EditorSession createSession(Player player) {
         EditorSession session = sessions.get(player.getUniqueId());
         if (session == null || session.kind() != EditorSession.Kind.CREATE || session.saving()) {
@@ -960,7 +1228,7 @@ public final class Editor {
         return session;
     }
 
-    private void persist(EditorSession session) {
+    void persist(EditorSession session) {
         arenas.save(session.data());
     }
 
@@ -975,7 +1243,41 @@ public final class Editor {
         });
     }
 
-    private void later(Player player, String message, Runnable then) {
+    private void showDoor(String arena, ArenaDoor door) {
+        holograms.showDoorAll(arena, door.price(), door.hologramA());
+        holograms.showDoorAll(arena, door.price(), door.hologramB());
+    }
+
+    private void clearDoor(String arena, ArenaDoor door) {
+        holograms.clearAll(arena, door.hologramA());
+        holograms.clearAll(arena, door.hologramB());
+    }
+
+    void info(Player player, String key) {
+        info(player, key, null);
+    }
+
+    private void info(Player player, String key, Map<String, ?> values) {
+        if (values == null) {
+            plugin.getMessageManager().send(player, key);
+            return;
+        }
+        plugin.getMessageManager().send(player, key, values);
+    }
+
+    void laterInfo(Player player, String key, Map<String, ?> values, Runnable then) {
+        FoliaManager.runAtEntity(player, () -> {
+            if (!player.isOnline()) {
+                return;
+            }
+            info(player, key, values);
+            if (then != null) {
+                then.run();
+            }
+        });
+    }
+
+    void later(Player player, String message, Runnable then) {
         FoliaManager.runAtEntity(player, () -> {
             if (!player.isOnline()) {
                 return;
@@ -987,7 +1289,7 @@ public final class Editor {
         });
     }
 
-    private void reply(Player player, String message) {
+    void reply(Player player, String message) {
         player.sendMessage(ColorParser.translateColors(message));
     }
 

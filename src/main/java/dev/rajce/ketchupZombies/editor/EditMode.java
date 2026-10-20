@@ -3,6 +3,8 @@ package dev.rajce.ketchupZombies.editor;
 public enum EditMode {
     NONE,
     NAME,
+    PRICE,
+    ARMOR_PRICE,
     MARK,
     DOOR_BLOCKS;
 

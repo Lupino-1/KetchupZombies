@@ -4,6 +4,7 @@ import org.bukkit.Material;
 
 public enum SpotKind {
     WEAPONS("weapons", "Weapon shops", Material.GOLD_INGOT),
+    ARMOR("armor", "Armor shops", Material.IRON_CHESTPLATE),
     LUCKY_CHESTS("lucky-chests", "Lucky chests", Material.CHEST),
     UPGRADERS("upgraders", "Weapon upgraders", Material.ANVIL),
     PERKS("perks", "Perks", Material.EXPERIENCE_BOTTLE),

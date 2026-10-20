@@ -2,13 +2,16 @@ package dev.rajce.ketchupZombies.managers;
 
 import dev.lupino1.folia.FoliaManager;
 import dev.rajce.ketchupZombies.KetchupZombies;
+import dev.rajce.ketchupZombies.models.ArmorOffer;
 import dev.rajce.ketchupZombies.models.ArenaData;
 import dev.rajce.ketchupZombies.models.ArenaDoor;
 import dev.rajce.ketchupZombies.models.ArenaSection;
 import dev.rajce.ketchupZombies.models.ArenaWindow;
 import dev.rajce.ketchupZombies.models.BlockPoint;
+import dev.rajce.ketchupZombies.models.FinePoint;
 import dev.rajce.ketchupZombies.models.SpotKind;
 import dev.rajce.ketchupZombies.models.WindowBlock;
+import dev.rajce.ketchupZombies.weapons.WeaponId;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -39,6 +42,26 @@ public final class ArenaFiles {
 
     public Set<String> names() {
         return names;
+    }
+
+    public List<String> listNow() {
+        File[] files = folder.listFiles((dir, name) -> name.endsWith(".yml"));
+        List<String> found = new ArrayList<>();
+        if (files != null) {
+            for (File file : files) {
+                String filename = file.getName();
+                found.add(filename.substring(0, filename.length() - 4));
+            }
+        }
+        return found;
+    }
+
+    public ArenaData readNow(String name) {
+        File file = file(name);
+        if (!file.isFile()) {
+            return null;
+        }
+        return read(file, name);
     }
 
     public void refreshNames() {
@@ -180,10 +203,14 @@ public final class ArenaFiles {
                 String path = "doors." + door.key();
                 yaml.set(path + ".from", door.from());
                 yaml.set(path + ".to", door.to());
-                yaml.set(path + ".price-from", door.priceFrom());
-                yaml.set(path + ".price-to", door.priceTo());
-                if (door.hologram() != null) {
-                    yaml.set(path + ".hologram", pointMap(door.hologram()));
+                if (door.price() != null) {
+                    yaml.set(path + ".price", door.price());
+                }
+                if (door.hologramA() != null) {
+                    yaml.set(path + ".hologram-a", fineMap(door.hologramA()));
+                }
+                if (door.hologramB() != null) {
+                    yaml.set(path + ".hologram-b", fineMap(door.hologramB()));
                 }
                 List<Map<String, Object>> blocks = new ArrayList<>();
                 for (BlockPoint block : door.blocks()) {
@@ -199,8 +226,27 @@ public final class ArenaFiles {
         yaml.set("windows", windows);
         for (SpotKind kind : SpotKind.values()) {
             List<Map<String, Object>> spots = new ArrayList<>();
-            for (BlockPoint point : data.spots(kind)) {
-                spots.add(pointMap(point));
+            for (FinePoint point : data.spots(kind)) {
+                Map<String, Object> stored = fineMap(point);
+                if (data.customArmor(point)) {
+                    List<Map<String, Object>> offers = new ArrayList<>();
+                    for (ArmorOffer offer : data.armorOffers(point)) {
+                        Map<String, Object> row = new java.util.LinkedHashMap<>();
+                        row.put("set", offer.set());
+                        row.put("pieces", new ArrayList<>(offer.pieces()));
+                        row.put("price", offer.price());
+                        offers.add(row);
+                    }
+                    stored.put("armor", offers);
+                }
+                if (data.customWeapons(point)) {
+                    List<String> weapons = new ArrayList<>();
+                    for (WeaponId weapon : data.weaponOffers(point)) {
+                        weapons.add(weapon.id());
+                    }
+                    stored.put("weapons", weapons);
+                }
+                spots.add(stored);
             }
             yaml.set("spots." + kind.key(), spots);
         }
@@ -235,16 +281,21 @@ public final class ArenaFiles {
                 if (door == null || !door.contains("from") || !door.contains("to")) {
                     continue;
                 }
-                ArenaDoor value = new ArenaDoor(
-                        door.getString("from"),
-                        door.getString("to"),
-                        door.getInt("price-from"),
-                        door.getInt("price-to")
-                );
-                ConfigurationSection hologram = door.getConfigurationSection("hologram");
-                if (hologram != null) {
-                    value.hologram(point(hologram.getValues(false)));
+                ArenaDoor value = new ArenaDoor(door.getString("from"), door.getString("to"));
+                if (door.contains("price")) {
+                    value.price(door.getInt("price"));
+                } else if (door.getInt("price-from") > 0) {
+                    value.price(door.getInt("price-from"));
+                } else if (door.getInt("price-to") > 0) {
+                    value.price(door.getInt("price-to"));
                 }
+                FinePoint hologramA = fine(section(door, "hologram-a"), 1.25);
+                FinePoint hologramB = fine(section(door, "hologram-b"), 1.25);
+                if (hologramA == null) {
+                    hologramA = fine(section(door, "hologram"), 1.25);
+                }
+                value.hologramA(hologramA);
+                value.hologramB(hologramB);
                 for (Map<?, ?> raw : door.getMapList("blocks")) {
                     BlockPoint block = point(raw);
                     if (block != null) {
@@ -262,23 +313,57 @@ public final class ArenaFiles {
         }
         for (SpotKind kind : SpotKind.values()) {
             for (Map<?, ?> raw : yaml.getMapList("spots." + kind.key())) {
-                BlockPoint point = point(raw);
+                FinePoint point = fine(raw, 1.25);
                 if (point != null) {
                     data.spots(kind).add(point);
+                    if (raw.containsKey("armor")) {
+                        data.armorOffers(point, armorOffers(raw.get("armor")));
+                    }
+                    if (raw.containsKey("weapons")) {
+                        data.weaponOffers(point, weaponOffers(raw.get("weapons")));
+                    }
                 }
             }
         }
         return data;
     }
 
+    private static List<WeaponId> weaponOffers(Object raw) {
+        List<WeaponId> weapons = new ArrayList<>();
+        if (!(raw instanceof List<?> list)) {
+            return weapons;
+        }
+        for (Object entry : list) {
+            if (entry instanceof String id) {
+                WeaponId weapon = WeaponId.byId(id);
+                if (weapon != null && !weapons.contains(weapon)) {
+                    weapons.add(weapon);
+                }
+            }
+        }
+        return weapons;
+    }
+
     private static Map<String, Object> windowMap(ArenaWindow window) {
         Map<String, Object> map = new java.util.LinkedHashMap<>();
-        map.put("size", window.size());
-        map.put("section", window.section());
-        map.put("face-min", pointMap(window.faceMin()));
-        map.put("face-max", pointMap(window.faceMax()));
+        if (window.size() != null) {
+            map.put("size", window.size());
+        }
+        if (window.section() != null) {
+            map.put("section", window.section());
+        }
+        if (window.corner1() != null) {
+            map.put("corner-1", pointMap(window.corner1()));
+        }
+        if (window.corner2() != null) {
+            map.put("corner-2", pointMap(window.corner2()));
+        }
+        if (window.faceMin() != null && window.faceMax() != null) {
+            map.put("face-min", pointMap(window.faceMin()));
+            map.put("face-max", pointMap(window.faceMax()));
+        }
         if (window.spawn() != null) {
-            map.put("spawn", pointMap(window.spawn()));
+            map.put("spawn", fineMap(window.spawn()));
         }
         List<Map<String, Object>> blocks = new ArrayList<>();
         for (WindowBlock block : window.blocks()) {
@@ -299,16 +384,40 @@ public final class ArenaFiles {
         return map;
     }
 
+    private static Map<String, Object> fineMap(FinePoint point) {
+        Map<String, Object> map = new java.util.LinkedHashMap<>();
+        map.put("world", point.world());
+        map.put("x", point.x());
+        map.put("y", point.y());
+        map.put("z", point.z());
+        map.put("precise", true);
+        return map;
+    }
+
     private static ArenaWindow window(Map<?, ?> raw) {
-        if (!(raw.get("size") instanceof String size) || !(raw.get("section") instanceof String section)) {
-            return null;
+        ArenaWindow window = new ArenaWindow();
+        if (raw.get("size") instanceof String size && !size.isBlank()) {
+            window.applyFace(size, point(map(raw.get("face-min"))), point(map(raw.get("face-max"))), windowBlocks(raw.get("blocks")));
+            if (window.faceMin() == null || window.faceMax() == null) {
+                window.applyFace(null, null, null, List.of());
+            }
+        } else {
+            window.applyFace(null, null, null, windowBlocks(raw.get("blocks")));
         }
-        BlockPoint faceMin = point(map(raw.get("face-min")));
-        BlockPoint faceMax = point(map(raw.get("face-max")));
-        if (faceMin == null || faceMax == null) {
-            return null;
+        if (raw.get("section") instanceof String section && !section.isBlank()) {
+            window.section(section);
         }
-        return new ArenaWindow(size, section, faceMin, faceMax, point(map(raw.get("spawn"))), windowBlocks(raw.get("blocks")));
+        BlockPoint corner1 = point(map(raw.get("corner-1")));
+        BlockPoint corner2 = point(map(raw.get("corner-2")));
+        window.corner1(corner1 != null ? corner1 : window.faceMin());
+        window.corner2(corner2 != null ? corner2 : window.faceMax());
+        window.spawn(fine(map(raw.get("spawn")), 0));
+        return window;
+    }
+
+    private static Map<?, ?> section(ConfigurationSection parent, String key) {
+        ConfigurationSection child = parent.getConfigurationSection(key);
+        return child == null ? null : child.getValues(false);
     }
 
     private static List<WindowBlock> windowBlocks(Object raw) {
@@ -327,11 +436,60 @@ public final class ArenaFiles {
         return blocks;
     }
 
+    private static List<ArmorOffer> armorOffers(Object raw) {
+        List<ArmorOffer> offers = new ArrayList<>();
+        if (!(raw instanceof List<?> list)) {
+            return offers;
+        }
+        for (Object item : list) {
+            Map<?, ?> values = map(item);
+            if (values == null || !(values.get("set") instanceof String set) || set.isBlank()) {
+                continue;
+            }
+            List<String> pieces = new ArrayList<>();
+            Object stored = values.get("pieces");
+            if (stored instanceof List<?> pieceList) {
+                for (Object piece : pieceList) {
+                    if (piece instanceof String text && !text.isBlank()) {
+                        pieces.add(text);
+                    }
+                }
+            } else if (stored instanceof String text) {
+                for (String piece : text.split(",")) {
+                    if (!piece.isBlank()) {
+                        pieces.add(piece.trim());
+                    }
+                }
+            }
+            offers.add(new ArmorOffer(set, pieces, number(values.get("price"))));
+        }
+        return offers;
+    }
+
     private static BlockPoint point(Map<?, ?> raw) {
         if (raw == null || !(raw.get("world") instanceof String world)) {
             return null;
         }
         return new BlockPoint(world, number(raw.get("x")), number(raw.get("y")), number(raw.get("z")));
+    }
+
+    private static FinePoint fine(Map<?, ?> raw, double lift) {
+        if (raw == null || !(raw.get("world") instanceof String world)) {
+            return null;
+        }
+        double x = decimal(raw.get("x"));
+        double y = decimal(raw.get("y"));
+        double z = decimal(raw.get("z"));
+        if (!Boolean.TRUE.equals(raw.get("precise"))) {
+            x += 0.5;
+            y += lift;
+            z += 0.5;
+        }
+        return new FinePoint(world, x, y, z);
+    }
+
+    private static double decimal(Object value) {
+        return value instanceof Number number ? number.doubleValue() : 0;
     }
 
     private static Map<?, ?> map(Object value) {

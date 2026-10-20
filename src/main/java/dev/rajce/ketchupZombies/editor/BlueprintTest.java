@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -57,7 +58,7 @@ public final class BlueprintTest {
         int half = SPAN_XZ / 2;
         Location first = new Location(world, x - half, y, z - half);
         Location second = new Location(world, x - half + SPAN_XZ - 1, y + SPAN_Y - 1, z - half + SPAN_XZ - 1);
-        reply(player, "&7Copying...");
+        plugin.getMessageManager().send(player, "test.copying");
         blueprints.capture(new Blueprint(first, second)).whenComplete((captured, error) -> FoliaManager.runAtEntity(player, () -> {
             copying.remove(player.getUniqueId());
             if (!player.isOnline()) {
@@ -69,7 +70,7 @@ public final class BlueprintTest {
                 return;
             }
             copies.put(player.getUniqueId(), captured);
-            reply(player, "&aCopied &f" + captured.getBlocks().size() + "&a blocks.");
+            plugin.getMessageManager().send(player, "test.copied", Map.of("count", Integer.toString(captured.getBlocks().size())));
         }));
     }
 
@@ -83,10 +84,10 @@ public final class BlueprintTest {
             reply(player, "&cCopy a blueprint first.");
             return;
         }
-        reply(player, "&7Pasting...");
+        plugin.getMessageManager().send(player, "test.pasting");
         blueprints.paste(blueprint, player.getLocation().getBlock().getLocation(), () -> FoliaManager.runAtEntity(player, () -> {
             if (player.isOnline()) {
-                reply(player, "&aPasted. Empty spots are air.");
+                plugin.getMessageManager().send(player, "test.pasted");
             }
         }));
     }

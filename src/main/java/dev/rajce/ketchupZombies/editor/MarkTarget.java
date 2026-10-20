@@ -8,5 +8,7 @@ public enum MarkTarget {
     WINDOW_CORNER_1,
     WINDOW_CORNER_2,
     SPOT,
-    DOOR_HOLOGRAM
+    DOOR_HOLOGRAM_A,
+    DOOR_HOLOGRAM_B,
+    WINDOW_SPAWN
 }

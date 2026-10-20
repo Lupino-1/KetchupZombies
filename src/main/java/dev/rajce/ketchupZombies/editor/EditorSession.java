@@ -44,7 +44,12 @@ public final class EditorSession {
     private String windowSection;
     private Location windowCorner1;
     private Location windowCorner2;
+    private int windowIndex = -1;
+    private boolean windowSaving;
     private SpotKind spotKind;
+    private int spotIndex = -1;
+    private String armorSet = "leather";
+    private final List<String> armorPieces = new ArrayList<>();
     private MarkTarget markTarget;
     private String doorKey;
     private final List<String> selected = new ArrayList<>();
@@ -243,12 +248,57 @@ public final class EditorSession {
         this.windowCorner2 = copy(windowCorner2);
     }
 
+    public synchronized int windowIndex() {
+        return windowIndex;
+    }
+
+    public synchronized void windowIndex(int windowIndex) {
+        this.windowIndex = windowIndex;
+    }
+
+    public synchronized boolean windowSaving() {
+        return windowSaving;
+    }
+
+    public synchronized void windowSaving(boolean windowSaving) {
+        this.windowSaving = windowSaving;
+    }
+
     public synchronized SpotKind spotKind() {
         return spotKind;
     }
 
     public synchronized void spotKind(SpotKind spotKind) {
         this.spotKind = spotKind;
+    }
+
+    public synchronized int spotIndex() {
+        return spotIndex;
+    }
+
+    public synchronized void spotIndex(int spotIndex) {
+        this.spotIndex = spotIndex;
+    }
+
+    public synchronized String armorSet() {
+        return armorSet;
+    }
+
+    public synchronized void armorSet(String armorSet) {
+        this.armorSet = armorSet;
+        armorPieces.clear();
+    }
+
+    public synchronized List<String> armorPieces() {
+        return List.copyOf(armorPieces);
+    }
+
+    public synchronized boolean toggleArmorPiece(String piece) {
+        if (armorPieces.remove(piece)) {
+            return false;
+        }
+        armorPieces.add(piece);
+        return true;
     }
 
     public synchronized void clearSectionDraft() {
@@ -261,6 +311,7 @@ public final class EditorSession {
         windowSection = null;
         windowCorner1 = null;
         windowCorner2 = null;
+        windowIndex = -1;
     }
 
     public synchronized void clearWizard() {

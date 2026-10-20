@@ -7,6 +7,7 @@ import dev.lupino1.folia.FoliaManager;
 import dev.rajce.ketchupZombies.KetchupZombies;
 import dev.rajce.ketchupZombies.models.Blueprint;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -57,6 +58,61 @@ public class BlueprintManager {
             }
         }
         blueprints = Map.copyOf(loaded);
+    }
+
+    public CompletableFuture<Stored> load(String name) {
+        CompletableFuture<Stored> future = new CompletableFuture<>();
+        FoliaManager.runAsync(() -> {
+            try {
+                File file = file(name);
+                if (!file.isFile()) {
+                    future.complete(null);
+                    return;
+                }
+                try (Reader reader = Files.newBufferedReader(file.toPath())) {
+                    JsonObject json = gson.fromJson(reader, JsonObject.class);
+                    future.complete(json == null ? null : parse(json));
+                }
+            } catch (Exception e) {
+                future.completeExceptionally(e);
+            }
+        });
+        return future;
+    }
+
+    private Stored parse(JsonObject json) {
+        JsonObject first = json.getAsJsonObject("corner1");
+        JsonObject second = json.getAsJsonObject("corner2");
+        String worldName = first != null && first.has("world") ? first.get("world").getAsString() : "";
+        Location corner1 = corner(null, first);
+        Location corner2 = corner(null, second);
+        Blueprint blueprint = new Blueprint(corner1, corner2);
+        JsonObject size = json.getAsJsonObject("size");
+        if (size != null) {
+            blueprint.size(size.get("x").getAsInt(), size.get("y").getAsInt(), size.get("z").getAsInt());
+        }
+        if (json.get("blocks") instanceof JsonArray blocks) {
+            for (int i = 0; i < blocks.size(); i++) {
+                JsonObject block = blocks.get(i).getAsJsonObject();
+                try {
+                    BlockData data = Bukkit.createBlockData(block.get("data").getAsString());
+                    blueprint.getBlocks().put(new Blueprint.Pos(block.get("x").getAsInt(), block.get("y").getAsInt(), block.get("z").getAsInt()), data);
+                } catch (Exception e) {
+                    plugin.getLogger().warning("Blueprint block: " + e.getMessage());
+                }
+            }
+        }
+        return new Stored(blueprint, worldName);
+    }
+
+    public record Stored(Blueprint blueprint, String worldName) {
+    }
+
+    private static Location corner(World world, JsonObject json) {
+        if (json == null) {
+            return new Location(world, 0, 0, 0);
+        }
+        return new Location(world, json.get("x").getAsInt(), json.get("y").getAsInt(), json.get("z").getAsInt());
     }
 
     public CompletableFuture<Blueprint> capture(Blueprint blueprint) {

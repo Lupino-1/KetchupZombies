@@ -7,16 +7,14 @@ public final class ArenaDoor {
 
     private final String from;
     private final String to;
-    private int priceFrom;
-    private int priceTo;
-    private BlockPoint hologram;
+    private Integer price;
+    private FinePoint hologramA;
+    private FinePoint hologramB;
     private final List<BlockPoint> blocks = new ArrayList<>();
 
-    public ArenaDoor(String from, String to, int priceFrom, int priceTo) {
+    public ArenaDoor(String from, String to) {
         this.from = from;
         this.to = to;
-        this.priceFrom = priceFrom;
-        this.priceTo = priceTo;
     }
 
     public String from() {
@@ -27,20 +25,28 @@ public final class ArenaDoor {
         return to;
     }
 
-    public int priceFrom() {
-        return priceFrom;
+    public Integer price() {
+        return price;
     }
 
-    public int priceTo() {
-        return priceTo;
+    public void price(Integer price) {
+        this.price = price;
     }
 
-    public BlockPoint hologram() {
-        return hologram;
+    public FinePoint hologramA() {
+        return hologramA;
     }
 
-    public void hologram(BlockPoint hologram) {
-        this.hologram = hologram;
+    public void hologramA(FinePoint hologramA) {
+        this.hologramA = hologramA;
+    }
+
+    public FinePoint hologramB() {
+        return hologramB;
+    }
+
+    public void hologramB(FinePoint hologramB) {
+        this.hologramB = hologramB;
     }
 
     public List<BlockPoint> blocks() {
@@ -57,6 +63,15 @@ public final class ArenaDoor {
 
     public void clearBlocks() {
         blocks.clear();
+    }
+
+    public ArenaDoor copy() {
+        ArenaDoor copy = new ArenaDoor(from, to);
+        copy.price = price;
+        copy.hologramA = hologramA;
+        copy.hologramB = hologramB;
+        copy.blocks.addAll(blocks);
+        return copy;
     }
 
     public String key() {
