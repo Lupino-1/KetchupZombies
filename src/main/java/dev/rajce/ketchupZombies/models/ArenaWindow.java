@@ -12,6 +12,9 @@ public final class ArenaWindow {
     private BlockPoint faceMin;
     private BlockPoint faceMax;
     private FinePoint spawn;
+    /** Inclusive block AABB where the player must stand (sneak) to repair. */
+    private BlockPoint repair1;
+    private BlockPoint repair2;
     private List<WindowBlock> blocks = new ArrayList<>();
 
     public String size() {
@@ -58,6 +61,27 @@ public final class ArenaWindow {
         this.spawn = spawn;
     }
 
+    public BlockPoint repair1() {
+        return repair1;
+    }
+
+    public void repair1(BlockPoint repair1) {
+        this.repair1 = repair1;
+    }
+
+    public BlockPoint repair2() {
+        return repair2;
+    }
+
+    public void repair2(BlockPoint repair2) {
+        this.repair2 = repair2;
+    }
+
+    public boolean hasRepairZone() {
+        return repair1 != null && repair2 != null
+                && repair1.world().equals(repair2.world());
+    }
+
     public List<WindowBlock> blocks() {
         return blocks;
     }
@@ -85,6 +109,8 @@ public final class ArenaWindow {
         copy.faceMin = faceMin;
         copy.faceMax = faceMax;
         copy.spawn = spawn;
+        copy.repair1 = repair1;
+        copy.repair2 = repair2;
         copy.blocks = new ArrayList<>(blocks);
         return copy;
     }
@@ -96,6 +122,9 @@ public final class ArenaWindow {
         }
         if (spawn != null) {
             text += " spawn " + spawn.format();
+        }
+        if (hasRepairZone()) {
+            text += " repair";
         }
         return text;
     }

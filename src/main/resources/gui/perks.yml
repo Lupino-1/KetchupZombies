@@ -1,0 +1,155 @@
+title: "&8Perks"
+rows: 3
+items:
+  red-border:
+    material: RED_STAINED_GLASS_PANE
+    name: " "
+    model-data: 0
+    lore: []
+    owned-lore: []
+    slots:
+      - "0-1"
+      - "7-8"
+      - "9"
+      - "17"
+      - "18-19"
+      - "25-26"
+    left-click-actions: []
+    right-click-actions: []
+  gray-border:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+    model-data: 0
+    lore: []
+    owned-lore: []
+    slots:
+      - "2-3"
+      - "5-6"
+      - "20-24"
+    left-click-actions: []
+    right-click-actions: []
+  power:
+    material: BLAZE_POWDER
+    name: "&cPower"
+    model-data: 0
+    lore:
+      - "&cOff. Perks stay locked."
+    owned-lore:
+      - "&aPurchased."
+    slots:
+      - "4"
+    left-click-actions:
+      - "state:power"
+    right-click-actions: []
+  fast-revive:
+    material: COOKIE
+    name: "&eFast revive"
+    model-data: 0
+    lore:
+      - "&7Price: &f%price%"
+      - "&aLeft click: &7buy."
+    owned-lore:
+      - "&aOwned."
+      - "&cRight click: &7sell for &f%price%&c."
+    slots:
+      - "10"
+    left-click-actions:
+      - "buy:fast-revive"
+    right-click-actions:
+      - "sell:fast-revive"
+  speed:
+    material: SUGAR
+    name: "&eSpeed"
+    model-data: 0
+    lore:
+      - "&7Price: &f%price%"
+      - "&aLeft click: &7buy."
+    owned-lore:
+      - "&aOwned."
+      - "&cRight click: &7sell for &f%price%&c."
+    slots:
+      - "11"
+    left-click-actions:
+      - "buy:speed"
+    right-click-actions:
+      - "sell:speed"
+  quick-fire:
+    material: REDSTONE
+    name: "&eQuick fire"
+    model-data: 0
+    lore:
+      - "&7Price: &f%price%"
+      - "&aLeft click: &7buy."
+    owned-lore:
+      - "&aOwned."
+      - "&cRight click: &7sell for &f%price%&c."
+    slots:
+      - "12"
+    left-click-actions:
+      - "buy:quick-fire"
+    right-click-actions:
+      - "sell:quick-fire"
+  extra-health:
+    material: GOLD_NUGGET
+    name: "&eExtra health"
+    model-data: 0
+    lore:
+      - "&7Price: &f%price%"
+      - "&aLeft click: &7buy."
+    owned-lore:
+      - "&aOwned."
+      - "&cRight click: &7sell for &f%price%&c."
+    slots:
+      - "13"
+    left-click-actions:
+      - "buy:extra-health"
+    right-click-actions:
+      - "sell:extra-health"
+  extra-weapon:
+    material: IRON_INGOT
+    name: "&eExtra weapon"
+    model-data: 0
+    lore:
+      - "&7Price: &f%price%"
+      - "&aLeft click: &7buy."
+    owned-lore:
+      - "&aOwned."
+      - "&cRight click: &7sell for &f%price%&c."
+    slots:
+      - "14"
+    left-click-actions:
+      - "buy:extra-weapon"
+    right-click-actions:
+      - "sell:extra-weapon"
+  frozen-bullets:
+    material: GHAST_TEAR
+    name: "&eFrozen bullets"
+    model-data: 0
+    lore:
+      - "&7Price: &f%price%"
+      - "&aLeft click: &7buy."
+    owned-lore:
+      - "&aOwned."
+      - "&cRight click: &7sell for &f%price%&c."
+    slots:
+      - "15"
+    left-click-actions:
+      - "buy:frozen-bullets"
+    right-click-actions:
+      - "sell:frozen-bullets"
+  flame-bullets:
+    material: BLAZE_POWDER
+    name: "&eFlame bullets"
+    model-data: 0
+    lore:
+      - "&7Price: &f%price%"
+      - "&aLeft click: &7buy."
+    owned-lore:
+      - "&aOwned."
+      - "&cRight click: &7sell for &f%price%&c."
+    slots:
+      - "16"
+    left-click-actions:
+      - "buy:flame-bullets"
+    right-click-actions:
+      - "sell:flame-bullets"

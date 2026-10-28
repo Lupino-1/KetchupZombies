@@ -13,10 +13,13 @@ public final class ArenaData {
     private final String name;
     private final Map<String, ArenaSection> sections = new LinkedHashMap<>();
     private final Map<String, ArenaDoor> doors = new LinkedHashMap<>();
+    private final Map<String, UltimateMachine> machines = new LinkedHashMap<>();
     private final List<ArenaWindow> windows = new ArrayList<>();
     private final Map<SpotKind, List<FinePoint>> spots = new EnumMap<>(SpotKind.class);
     private final Map<String, List<ArmorOffer>> shopArmor = new LinkedHashMap<>();
     private final Map<String, List<WeaponId>> shopWeapons = new LinkedHashMap<>();
+    /** Player spawn for lobby / match start (precise + look). */
+    private FinePoint spawn;
 
     public ArenaData(String name) {
         this.name = name;
@@ -29,12 +32,24 @@ public final class ArenaData {
         return name;
     }
 
+    public FinePoint spawn() {
+        return spawn;
+    }
+
+    public void spawn(FinePoint spawn) {
+        this.spawn = spawn;
+    }
+
     public Map<String, ArenaSection> sections() {
         return sections;
     }
 
     public Map<String, ArenaDoor> doors() {
         return doors;
+    }
+
+    public Map<String, UltimateMachine> machines() {
+        return machines;
     }
 
     public List<ArenaWindow> windows() {
@@ -92,10 +107,15 @@ public final class ArenaData {
 
     public ArenaData copy() {
         ArenaData copy = new ArenaData(name);
+        copy.spawn = spawn;
         copy.sections.putAll(sections);
         for (ArenaDoor door : doors.values()) {
             ArenaDoor cloned = door.copy();
             copy.doors.put(cloned.key(), cloned);
+        }
+        for (UltimateMachine machine : machines.values()) {
+            UltimateMachine cloned = machine.copy();
+            copy.machines.put(cloned.id(), cloned);
         }
         for (ArenaWindow window : windows) {
             copy.windows.add(window.copy());

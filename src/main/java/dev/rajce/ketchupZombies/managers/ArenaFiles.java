@@ -5,6 +5,7 @@ import dev.rajce.ketchupZombies.KetchupZombies;
 import dev.rajce.ketchupZombies.models.ArmorOffer;
 import dev.rajce.ketchupZombies.models.ArenaData;
 import dev.rajce.ketchupZombies.models.ArenaDoor;
+import dev.rajce.ketchupZombies.models.UltimateMachine;
 import dev.rajce.ketchupZombies.models.ArenaSection;
 import dev.rajce.ketchupZombies.models.ArenaWindow;
 import dev.rajce.ketchupZombies.models.BlockPoint;
@@ -30,6 +31,8 @@ public final class ArenaFiles {
     private final KetchupZombies plugin;
     private final File folder;
     private final ConcurrentHashMap<String, Object> locks = new ConcurrentHashMap<>();
+    /** Latest snapshot waiting to flush — coalesces rapid editor saves so an older write cannot overwrite a newer one. */
+    private final ConcurrentHashMap<String, ArenaData> pending = new ConcurrentHashMap<>();
     private final Set<String> deleted = ConcurrentHashMap.newKeySet();
     private volatile Set<String> names = Set.of();
 
@@ -96,20 +99,31 @@ public final class ArenaFiles {
     }
 
     public void save(ArenaData data) {
-        ArenaData copy = data.copy();
-        FoliaManager.runAsync(() -> {
-            synchronized (lock(copy.name())) {
-                if (deleted.contains(copy.name())) {
-                    return;
-                }
-                try {
-                    write(copy);
-                    remember(copy.name());
-                } catch (IOException e) {
-                    plugin.getLogger().warning("Arena save " + copy.name() + ": " + e.getMessage());
-                }
+        if (data == null) {
+            return;
+        }
+        String name = data.name();
+        pending.put(name, data.copy());
+        FoliaManager.runAsync(() -> flush(name));
+    }
+
+    private void flush(String name) {
+        synchronized (lock(name)) {
+            if (deleted.contains(name)) {
+                pending.remove(name);
+                return;
             }
-        });
+            ArenaData latest = pending.remove(name);
+            if (latest == null) {
+                return;
+            }
+            try {
+                write(latest);
+                remember(name);
+            } catch (IOException e) {
+                plugin.getLogger().warning("Arena save " + name + ": " + e.getMessage());
+            }
+        }
     }
 
     public CompletableFuture<Void> createEmpty(String name) {
@@ -179,8 +193,16 @@ public final class ArenaFiles {
 
     private void write(ArenaData data) throws IOException {
         YamlConfiguration yaml = new YamlConfiguration();
-        yaml.options().setHeader(List.of("Arena markers."));
+        yaml.options().setHeader(List.of(
+                "Arena markers.",
+                "Spot holograms: yaw/pitch from place look. fixed defaults true (Billboard.FIXED); set fixed: false for CENTER.",
+                "Window repair-1 / repair-2: inclusive block AABB (player must sneak inside to repair).",
+                "Map/marker change: /kz refresh <name>. Hologram text lines: config.yml holograms."
+        ));
         yaml.set("name", data.name());
+        if (data.spawn() != null) {
+            yaml.set("spawn", fineMap(data.spawn()));
+        }
         if (data.sections().isEmpty()) {
             yaml.createSection("sections");
         } else {
@@ -219,6 +241,21 @@ public final class ArenaFiles {
                 yaml.set(path + ".blocks", blocks);
             }
         }
+        if (data.machines().isEmpty()) {
+            yaml.createSection("machines");
+        } else {
+            for (UltimateMachine machine : data.machines().values()) {
+                String path = "machines." + machine.id();
+                if (machine.hologram() != null) {
+                    yaml.set(path + ".hologram", fineMap(machine.hologram()));
+                }
+                List<Map<String, Object>> blocks = new ArrayList<>();
+                for (BlockPoint block : machine.blocks()) {
+                    blocks.add(pointMap(block));
+                }
+                yaml.set(path + ".blocks", blocks);
+            }
+        }
         List<Map<String, Object>> windows = new ArrayList<>();
         for (ArenaWindow window : data.windows()) {
             windows.add(windowMap(window));
@@ -232,9 +269,10 @@ public final class ArenaFiles {
                     List<Map<String, Object>> offers = new ArrayList<>();
                     for (ArmorOffer offer : data.armorOffers(point)) {
                         Map<String, Object> row = new java.util.LinkedHashMap<>();
-                        row.put("set", offer.set());
-                        row.put("pieces", new ArrayList<>(offer.pieces()));
                         row.put("price", offer.price());
+                        for (Map.Entry<String, String> slot : offer.slots().entrySet()) {
+                            row.put(slot.getKey(), slot.getValue());
+                        }
                         offers.add(row);
                     }
                     stored.put("armor", offers);
@@ -256,6 +294,10 @@ public final class ArenaFiles {
     private ArenaData read(File file, String name) {
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
         ArenaData data = new ArenaData(name);
+        ConfigurationSection spawnSection = yaml.getConfigurationSection("spawn");
+        if (spawnSection != null) {
+            data.spawn(fine(spawnSection.getValues(false), 0));
+        }
         ConfigurationSection sections = yaml.getConfigurationSection("sections");
         if (sections != null) {
             for (String key : sections.getKeys(false)) {
@@ -303,6 +345,24 @@ public final class ArenaFiles {
                     }
                 }
                 data.doors().put(value.key(), value);
+            }
+        }
+        ConfigurationSection machines = yaml.getConfigurationSection("machines");
+        if (machines != null) {
+            for (String key : machines.getKeys(false)) {
+                ConfigurationSection machine = machines.getConfigurationSection(key);
+                if (machine == null) {
+                    continue;
+                }
+                UltimateMachine value = new UltimateMachine(key);
+                value.hologram(fine(section(machine, "hologram"), 1.25));
+                for (Map<?, ?> raw : machine.getMapList("blocks")) {
+                    BlockPoint block = point(raw);
+                    if (block != null) {
+                        value.addBlock(block);
+                    }
+                }
+                data.machines().put(key, value);
             }
         }
         for (Map<?, ?> raw : yaml.getMapList("windows")) {
@@ -365,6 +425,12 @@ public final class ArenaFiles {
         if (window.spawn() != null) {
             map.put("spawn", fineMap(window.spawn()));
         }
+        if (window.repair1() != null) {
+            map.put("repair-1", pointMap(window.repair1()));
+        }
+        if (window.repair2() != null) {
+            map.put("repair-2", pointMap(window.repair2()));
+        }
         List<Map<String, Object>> blocks = new ArrayList<>();
         for (WindowBlock block : window.blocks()) {
             Map<String, Object> stored = pointMap(block.point());
@@ -390,6 +456,11 @@ public final class ArenaFiles {
         map.put("x", point.x());
         map.put("y", point.y());
         map.put("z", point.z());
+        map.put("yaw", point.yaw());
+        map.put("pitch", point.pitch());
+        if (point.fixed() != null) {
+            map.put("fixed", point.fixed());
+        }
         map.put("precise", true);
         return map;
     }
@@ -412,6 +483,8 @@ public final class ArenaFiles {
         window.corner1(corner1 != null ? corner1 : window.faceMin());
         window.corner2(corner2 != null ? corner2 : window.faceMax());
         window.spawn(fine(map(raw.get("spawn")), 0));
+        window.repair1(point(map(raw.get("repair-1"))));
+        window.repair2(point(map(raw.get("repair-2"))));
         return window;
     }
 
@@ -443,7 +516,23 @@ public final class ArenaFiles {
         }
         for (Object item : list) {
             Map<?, ?> values = map(item);
-            if (values == null || !(values.get("set") instanceof String set) || set.isBlank()) {
+            if (values == null) {
+                continue;
+            }
+            int price = number(values.get("price"));
+            Map<String, String> slots = new java.util.LinkedHashMap<>();
+            for (String slot : ArmorOffer.SLOT_ORDER) {
+                Object value = values.get(slot);
+                if (value instanceof String set && !set.isBlank()) {
+                    slots.put(slot, set);
+                }
+            }
+            if (!slots.isEmpty()) {
+                offers.add(new ArmorOffer(slots, price));
+                continue;
+            }
+            // Legacy: set + pieces list
+            if (!(values.get("set") instanceof String set) || set.isBlank()) {
                 continue;
             }
             List<String> pieces = new ArrayList<>();
@@ -461,7 +550,7 @@ public final class ArenaFiles {
                     }
                 }
             }
-            offers.add(new ArmorOffer(set, pieces, number(values.get("price"))));
+            offers.add(new ArmorOffer(set, pieces, price));
         }
         return offers;
     }
@@ -485,7 +574,16 @@ public final class ArenaFiles {
             y += lift;
             z += 0.5;
         }
-        return new FinePoint(world, x, y, z);
+        float yaw = (float) decimal(raw.get("yaw"));
+        float pitch = (float) decimal(raw.get("pitch"));
+        Boolean fixed = null;
+        if (raw.containsKey("fixed")) {
+            Object value = raw.get("fixed");
+            if (value instanceof Boolean bool) {
+                fixed = bool;
+            }
+        }
+        return new FinePoint(world, x, y, z, yaw, pitch, fixed);
     }
 
     private static double decimal(Object value) {

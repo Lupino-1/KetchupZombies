@@ -81,6 +81,11 @@ public final class Editor {
         return session != null && session.mode() == EditMode.MARK && isHologram(session.markTarget());
     }
 
+    public boolean markingLucky(Player player) {
+        EditorSession session = sessions.get(player.getUniqueId());
+        return session != null && session.markTarget() == MarkTarget.SPOT && session.spotKind() == SpotKind.LUCKY_CHESTS;
+    }
+
     public boolean shouldCancelBreak(Player player, Block block) {
         EditorSession session = sessions.get(player.getUniqueId());
         return session != null && (session.mode().marksBlock() || session.suppressBreak(block));
@@ -229,13 +234,37 @@ public final class Editor {
                 finishCreateFailure(player, session, "&cAn arena with that name already exists.");
                 return;
             }
-            blueprints.save(name, new Blueprint(first, second))
+            Blueprint captured = new Blueprint(first, second);
+            blueprints.save(name, captured)
                     .thenCompose(ignored -> arenas.createEmpty(name))
-                    .whenComplete((ignored, error) -> {
+                    .thenCompose(ignored -> blueprints.load(name))
+                    .whenComplete((stored, error) -> {
                         creating.remove(name);
-                        if (error != null) {
-                            plugin.getLogger().warning("Arena create " + name + ": " + error.getMessage());
+                        if (error != null || stored == null) {
+                            plugin.getLogger().warning("Arena create " + name + ": " + (error == null ? "empty" : error.getMessage()));
                             finishCreateFailure(player, session, "&cSave failed. Check console.");
+                            return;
+                        }
+                        // Paste origin from JSON so the world AABB matches storage (air gaps cleared).
+                        World world = plugin.getServer().getWorld(stored.worldName());
+                        if (world == null) {
+                            world = first.getWorld();
+                        }
+                        if (world != null) {
+                            stored.blueprint().getCorner1().setWorld(world);
+                            stored.blueprint().getCorner2().setWorld(world);
+                            Location origin = new Location(
+                                    world,
+                                    Math.min(stored.blueprint().getCorner1().getBlockX(), stored.blueprint().getCorner2().getBlockX()),
+                                    Math.min(stored.blueprint().getCorner1().getBlockY(), stored.blueprint().getCorner2().getBlockY()),
+                                    Math.min(stored.blueprint().getCorner1().getBlockZ(), stored.blueprint().getCorner2().getBlockZ())
+                            );
+                            blueprints.paste(stored.blueprint(), origin, () -> FoliaManager.runAtEntity(player, () -> {
+                                sessions.remove(player.getUniqueId());
+                                if (player.isOnline()) {
+                                    info(player, "editor.saved-create", Map.of("name", name));
+                                }
+                            }));
                             return;
                         }
                         FoliaManager.runAtEntity(player, () -> {
@@ -489,7 +518,7 @@ public final class Editor {
         if (click == MenuClick.RIGHT) {
             door.price(null);
             persist(session);
-            showDoor(session.data().name(), door);
+            showDoor(session.data(), door);
             menus.doorEdit(player, session);
             return;
         }
@@ -669,6 +698,22 @@ public final class Editor {
         menus.windowForm(player, session);
     }
 
+    public void clickArenaSpawn(Player player, MenuClick click) {
+        EditorSession session = editSession(player);
+        if (session == null || session.data() == null) {
+            return;
+        }
+        if (click == MenuClick.RIGHT) {
+            session.data().spawn(null);
+            persist(session);
+            menus.hub(player, session);
+            return;
+        }
+        if (click == MenuClick.LEFT) {
+            armMark(player, session, MarkTarget.ARENA_SPAWN, EditorSession.Screen.HUB);
+        }
+    }
+
     public void clickWindowSpawn(Player player, MenuClick click) {
         EditorSession session = editSession(player);
         if (session == null) {
@@ -687,6 +732,31 @@ public final class Editor {
         }
         if (click == MenuClick.LEFT) {
             armMark(player, session, MarkTarget.WINDOW_SPAWN, EditorSession.Screen.WINDOW_FORM);
+        }
+    }
+
+    public void clickWindowRepair(Player player, int index, MenuClick click) {
+        EditorSession session = editSession(player);
+        if (session == null) {
+            return;
+        }
+        ArenaWindow window = window(session);
+        if (window == null) {
+            showWindows(player);
+            return;
+        }
+        if (click == MenuClick.RIGHT) {
+            if (index == 1) {
+                window.repair1(null);
+            } else {
+                window.repair2(null);
+            }
+            persist(session);
+            menus.windowForm(player, session);
+            return;
+        }
+        if (click == MenuClick.LEFT) {
+            armMark(player, session, index == 1 ? MarkTarget.WINDOW_REPAIR_1 : MarkTarget.WINDOW_REPAIR_2, EditorSession.Screen.WINDOW_FORM);
         }
     }
 
@@ -837,7 +907,7 @@ public final class Editor {
         if (index >= 0 && index < points.size()) {
             FinePoint removed = points.remove(index);
             session.data().forgetSpot(removed);
-            holograms.clearAll(session.data().name(), removed);
+            holograms.clearAll(session.data().name(), removed, kind == SpotKind.LUCKY_CHESTS);
             persist(session);
             info(player, "editor.removed");
         }
@@ -926,7 +996,7 @@ public final class Editor {
             laterInfo(player, hint, null, null);
             return;
         }
-        if (session.mode() == EditMode.DOOR_BLOCKS) {
+        if (session.mode() == EditMode.DOOR_BLOCKS || session.mode() == EditMode.MACHINE_BLOCKS) {
             laterInfo(player, "editor.place-blocks-hint", null, null);
         }
     }
@@ -951,8 +1021,43 @@ public final class Editor {
             case SECTION_CORNER_2 -> setCorner(player, session, location, session.sectionCorner1(), false, false);
             case WINDOW_CORNER_1 -> storeWindowCorner(player, session, location, true);
             case WINDOW_CORNER_2 -> storeWindowCorner(player, session, location, false);
-            case SPOT, DOOR_HOLOGRAM_A, DOOR_HOLOGRAM_B, WINDOW_SPAWN -> confirmHologram(player);
+            case WINDOW_REPAIR_1 -> storeRepairCorner(player, session, location, true);
+            case WINDOW_REPAIR_2 -> storeRepairCorner(player, session, location, false);
+            case SPOT -> {
+                if (session.spotKind() == SpotKind.LUCKY_CHESTS) {
+                    Location at = block.getLocation().add(0.5, 0, 0.5);
+                    at.setYaw(player.getLocation().getYaw());
+                    at.setPitch(0);
+                    finishSpot(player, session, at);
+                } else {
+                    confirmHologram(player);
+                }
+            }
+            case DOOR_HOLOGRAM_A, DOOR_HOLOGRAM_B, WINDOW_SPAWN, ARENA_SPAWN, MACHINE_HOLOGRAM -> confirmHologram(player);
         }
+    }
+
+    private void storeRepairCorner(Player player, EditorSession session, Location location, boolean first) {
+        ArenaWindow window = window(session);
+        if (window == null) {
+            session.mode(EditMode.NONE);
+            later(player, "&cThat window no longer exists.", () -> menus.windows(player, session));
+            return;
+        }
+        BlockPoint other = first ? window.repair2() : window.repair1();
+        if (other != null && location.getWorld() != null && !location.getWorld().getName().equals(other.world())) {
+            later(player, "&cCorners must be in the same world. Left-click again, or type &fleave&e.", null);
+            return;
+        }
+        BlockPoint point = BlockPoint.of(location);
+        if (first) {
+            window.repair1(point);
+        } else {
+            window.repair2(point);
+        }
+        session.mode(EditMode.NONE);
+        persist(session);
+        laterInfo(player, "editor.repair-corner-set", Map.of("n", first ? "1" : "2", "pos", format(location)), () -> menus.windowForm(player, session));
     }
 
     public void confirmHologram(Player player) {
@@ -964,19 +1069,54 @@ public final class Editor {
             return;
         }
         if (session.markTarget() == MarkTarget.SPOT) {
-            finishSpot(player, session, player.getEyeLocation());
+            finishSpot(player, session, player.getLocation());
             return;
         }
         if (session.markTarget() == MarkTarget.WINDOW_SPAWN) {
             finishWindowSpawn(player, session, player.getLocation());
             return;
         }
-        finishHologram(player, session, player.getEyeLocation());
+        if (session.markTarget() == MarkTarget.ARENA_SPAWN) {
+            finishArenaSpawn(player, session, player.getLocation());
+            return;
+        }
+        if (session.markTarget() == MarkTarget.MACHINE_HOLOGRAM) {
+            finishMachineHologram(player, session, player.getLocation());
+            return;
+        }
+        finishHologram(player, session, player.getLocation());
+    }
+
+    private void finishArenaSpawn(Player player, EditorSession session, Location location) {
+        session.mode(EditMode.NONE);
+        if (session.data() == null || location.getWorld() == null) {
+            later(player, "&cThat arena is no longer open.", () -> menus.hub(player, session));
+            return;
+        }
+        FinePoint point = FinePoint.of(location);
+        session.data().spawn(point);
+        persist(session);
+        laterInfo(player, "editor.arena-spawn-set", Map.of("pos", point.format()), () -> menus.hub(player, session));
     }
 
     public void placeDoorBlock(Player player, Block block) {
         EditorSession session = sessions.get(player.getUniqueId());
-        if (session == null || session.mode() != EditMode.DOOR_BLOCKS) {
+        if (session == null) {
+            return;
+        }
+        if (session.mode() == EditMode.MACHINE_BLOCKS) {
+            dev.rajce.ketchupZombies.models.UltimateMachine machine = machine(session);
+            if (machine == null) {
+                return;
+            }
+            if (!machine.addBlock(dev.rajce.ketchupZombies.models.BlockPoint.of(block.getLocation()))) {
+                return;
+            }
+            persist(session);
+            info(player, "editor.machine-block-added");
+            return;
+        }
+        if (session.mode() != EditMode.DOOR_BLOCKS) {
             return;
         }
         ArenaDoor door = door(session);
@@ -1057,7 +1197,7 @@ public final class Editor {
             }
             door.price(price);
             persist(session);
-            showDoor(session.data().name(), door);
+            showDoor(session.data(), door);
             menus.doorEdit(player, session);
         });
     }
@@ -1104,7 +1244,7 @@ public final class Editor {
         points.add(point);
         session.mode(EditMode.NONE);
         persist(session);
-        holograms.showSpotAll(session.data().name(), kind, point);
+        holograms.showSpotAll(session.data(), kind, point);
         laterInfo(player, kind == SpotKind.POWER ? "editor.power-set" : "editor.hologram-saved", Map.of("pos", point.format()), () -> menus.spots(player, session, kind));
     }
 
@@ -1117,14 +1257,136 @@ public final class Editor {
         }
         boolean second = session.markTarget() == MarkTarget.DOOR_HOLOGRAM_B;
         FinePoint point = FinePoint.of(location);
+        String section;
         if (second) {
             door.hologramB(point);
+            section = door.from();
         } else {
             door.hologramA(point);
+            section = door.to();
         }
         persist(session);
-        holograms.showDoorAll(session.data().name(), door.price(), point);
-        laterInfo(player, "editor.door-hologram-set", Map.of("n", second ? "2" : "1", "pos", point.format()), () -> menus.doorEdit(player, session));
+        holograms.showDoorAll(session.data(), door.price(), point, section);
+        laterInfo(player, "editor.door-hologram-set", Map.of(
+                "from", second ? door.to() : door.from(),
+                "to", section,
+                "pos", point.format()
+        ), () -> menus.doorEdit(player, session));
+    }
+
+    public void showMachines(Player player) {
+        EditorSession session = editSession(player);
+        if (session == null) {
+            return;
+        }
+        session.mode(EditMode.NONE);
+        session.machineId(null);
+        session.screen(EditorSession.Screen.MACHINES);
+        menus.machines(player, session);
+    }
+
+    public void beginMachine(Player player) {
+        EditorSession session = editSession(player);
+        if (session == null) {
+            return;
+        }
+        int n = 1;
+        while (session.data().machines().containsKey("machine-" + n)) {
+            n++;
+        }
+        dev.rajce.ketchupZombies.models.UltimateMachine machine = new dev.rajce.ketchupZombies.models.UltimateMachine("machine-" + n);
+        session.data().machines().put(machine.id(), machine);
+        session.machineId(machine.id());
+        persist(session);
+        session.screen(EditorSession.Screen.MACHINE_EDIT);
+        menus.machineEdit(player, session);
+    }
+
+    public void clickMachine(Player player, String id, MenuClick click) {
+        EditorSession session = editSession(player);
+        if (session == null) {
+            return;
+        }
+        if (click == MenuClick.RIGHT) {
+            dev.rajce.ketchupZombies.models.UltimateMachine removed = session.data().machines().remove(id);
+            if (removed != null) {
+                holograms.clearAll(session.data().name(), removed.hologram());
+            }
+            persist(session);
+            menus.machines(player, session);
+            return;
+        }
+        if (!session.data().machines().containsKey(id)) {
+            menus.machines(player, session);
+            return;
+        }
+        session.machineId(id);
+        session.screen(EditorSession.Screen.MACHINE_EDIT);
+        menus.machineEdit(player, session);
+    }
+
+    public void clickMachineBlocks(Player player, MenuClick click) {
+        EditorSession session = editSession(player);
+        if (session == null) {
+            return;
+        }
+        dev.rajce.ketchupZombies.models.UltimateMachine machine = machine(session);
+        if (machine == null) {
+            showMachines(player);
+            return;
+        }
+        if (click == MenuClick.RIGHT) {
+            machine.clearBlocks();
+            persist(session);
+            menus.machineEdit(player, session);
+            return;
+        }
+        session.mode(EditMode.MACHINE_BLOCKS);
+        session.screen(EditorSession.Screen.MACHINE_EDIT);
+        player.closeInventory();
+        info(player, "editor.place-machine-blocks");
+    }
+
+    public void clickMachineHologram(Player player, MenuClick click) {
+        EditorSession session = editSession(player);
+        if (session == null) {
+            return;
+        }
+        dev.rajce.ketchupZombies.models.UltimateMachine machine = machine(session);
+        if (machine == null) {
+            showMachines(player);
+            return;
+        }
+        if (click == MenuClick.RIGHT) {
+            FinePoint point = machine.hologram();
+            machine.hologram(null);
+            holograms.clearAll(session.data().name(), point);
+            persist(session);
+            menus.machineEdit(player, session);
+            return;
+        }
+        armMark(player, session, MarkTarget.MACHINE_HOLOGRAM, EditorSession.Screen.MACHINE_EDIT);
+    }
+
+    private void finishMachineHologram(Player player, EditorSession session, Location location) {
+        dev.rajce.ketchupZombies.models.UltimateMachine machine = machine(session);
+        session.mode(EditMode.NONE);
+        if (machine == null) {
+            later(player, "&cThat machine no longer exists.", () -> menus.machines(player, session));
+            return;
+        }
+        FinePoint point = FinePoint.of(location);
+        machine.hologram(point);
+        persist(session);
+        holograms.showMachineAll(session.data(), machine);
+        laterInfo(player, "editor.hologram-saved", Map.of("pos", point.format()), () -> menus.machineEdit(player, session));
+    }
+
+    private dev.rajce.ketchupZombies.models.UltimateMachine machine(EditorSession session) {
+        if (session.machineId() == null) {
+            return null;
+        }
+        return session.data().machines().get(session.machineId());
     }
 
     private void finishWindowSpawn(Player player, EditorSession session, Location location) {
@@ -1152,7 +1414,7 @@ public final class Editor {
         session.markTarget(target);
         session.screen(screen);
         player.closeInventory();
-        if (target == MarkTarget.WINDOW_SPAWN) {
+        if (target == MarkTarget.WINDOW_SPAWN || target == MarkTarget.ARENA_SPAWN) {
             info(player, "editor.mark-spawn");
             return;
         }
@@ -1164,7 +1426,9 @@ public final class Editor {
     }
 
     private static boolean isHologram(MarkTarget target) {
-        return target == MarkTarget.SPOT || target == MarkTarget.DOOR_HOLOGRAM_A || target == MarkTarget.DOOR_HOLOGRAM_B || target == MarkTarget.WINDOW_SPAWN;
+        return target == MarkTarget.SPOT || target == MarkTarget.DOOR_HOLOGRAM_A || target == MarkTarget.DOOR_HOLOGRAM_B
+                || target == MarkTarget.MACHINE_HOLOGRAM
+                || target == MarkTarget.WINDOW_SPAWN || target == MarkTarget.ARENA_SPAWN;
     }
 
     private void openScreen(Player player, EditorSession session) {
@@ -1176,6 +1440,8 @@ public final class Editor {
             case DOORS -> menus.doors(player, session);
             case DOOR_PICK -> menus.doorPick(player, session);
             case DOOR_EDIT -> menus.doorEdit(player, session);
+            case MACHINES -> menus.machines(player, session);
+            case MACHINE_EDIT -> menus.machineEdit(player, session);
             case WINDOWS -> menus.windows(player, session);
             case WINDOW_FORM -> menus.windowForm(player, session);
             case SPOT -> menus.spots(player, session, session.spotKind() == null ? SpotKind.WEAPONS : session.spotKind());
@@ -1243,9 +1509,16 @@ public final class Editor {
         });
     }
 
-    private void showDoor(String arena, ArenaDoor door) {
-        holograms.showDoorAll(arena, door.price(), door.hologramA());
-        holograms.showDoorAll(arena, door.price(), door.hologramB());
+    private void showDoor(ArenaData data, ArenaDoor door) {
+        if (data == null || door == null) {
+            return;
+        }
+        if (door.hologramA() != null) {
+            holograms.showDoorAll(data, door.price(), door.hologramA(), door.to());
+        }
+        if (door.hologramB() != null) {
+            holograms.showDoorAll(data, door.price(), door.hologramB(), door.from());
+        }
     }
 
     private void clearDoor(String arena, ArenaDoor door) {

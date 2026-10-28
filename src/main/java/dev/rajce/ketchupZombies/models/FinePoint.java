@@ -4,7 +4,11 @@ import org.bukkit.Location;
 
 import java.math.BigDecimal;
 
-public record FinePoint(String world, double x, double y, double z) {
+public record FinePoint(String world, double x, double y, double z, float yaw, float pitch, Boolean fixed) {
+
+    public FinePoint(String world, double x, double y, double z) {
+        this(world, x, y, z, 0f, 0f, null);
+    }
 
     public FinePoint {
         x = round(x);
@@ -16,7 +20,28 @@ public record FinePoint(String world, double x, double y, double z) {
         if (location.getWorld() == null) {
             throw new IllegalArgumentException("Location has no world");
         }
-        return new FinePoint(location.getWorld().getName(), location.getX(), location.getY(), location.getZ());
+        return new FinePoint(
+                location.getWorld().getName(),
+                location.getX(),
+                location.getY(),
+                location.getZ(),
+                location.getYaw(),
+                location.getPitch(),
+                null
+        );
+    }
+
+    /** Default true when unset in arena YML. */
+    public boolean billboardFixed() {
+        return fixed == null || fixed;
+    }
+
+    public FinePoint withFixed(Boolean fixed) {
+        return new FinePoint(world, x, y, z, yaw, pitch, fixed);
+    }
+
+    public FinePoint shifted(double dx, double dy, double dz) {
+        return new FinePoint(world, x + dx, y + dy, z + dz, yaw, pitch, fixed);
     }
 
     public String format() {

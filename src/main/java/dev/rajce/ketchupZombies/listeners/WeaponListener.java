@@ -22,29 +22,46 @@ public final class WeaponListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler
+    // ignoreCancelled=false: RIGHT/LEFT_CLICK_AIR is often pre-cancelled by Bukkit — that was
+    // why guns only fired when clicking a block (ground), never into air.
+    @EventHandler(ignoreCancelled = false)
     public void onInteract(PlayerInteractEvent event) {
-        ItemStack item = event.getItem();
-        WeaponId id = plugin.getWeaponItems().id(item);
-        if (id == null || event.getHand() != EquipmentSlot.HAND) {
+        if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
-        if (plugin.getHolograms().looking(event.getPlayer(), 3.5) != null) {
+        Player player = event.getPlayer();
+        // event.getItem() is often null on clicks — always read main hand.
+        ItemStack item = player.getInventory().getItemInMainHand();
+        WeaponId id = plugin.getWeaponItems().id(item);
+        if (id == null) {
+            return;
+        }
+        // Knife = vanilla iron sword. No custom interact damage.
+        if (id == WeaponId.KNIFE) {
+            return;
+        }
+        if (plugin.getGames().inQueue(player)) {
+            event.setCancelled(true);
+            return;
+        }
+        // Only defer RMB shoot when really aiming at a nearby shop/door hologram.
+        if (event.getAction().isRightClick()
+                && plugin.getHolograms().looking(player, 3.5) != null) {
             return;
         }
         event.setCancelled(true);
         if (id.melee()) {
             if (event.getAction().isLeftClick()) {
-                plugin.getWeaponCombat().use(event.getPlayer(), item, false);
+                plugin.getWeaponCombat().use(player, item, false);
             }
             return;
         }
         if (event.getAction().isLeftClick()) {
-            plugin.getWeaponCombat().use(event.getPlayer(), item, true);
+            plugin.getWeaponCombat().gunLeftClick(player, item);
             return;
         }
         if (event.getAction().isRightClick()) {
-            plugin.getWeaponCombat().use(event.getPlayer(), item, false);
+            plugin.getWeaponCombat().use(player, item, false);
         }
     }
 
@@ -78,10 +95,22 @@ public final class WeaponListener implements Listener {
         if (id == null) {
             return;
         }
-        event.setCancelled(true);
-        if (id.melee() && event.getEntity() instanceof LivingEntity living) {
-            plugin.getWeaponCombat().meleeHit(player, living);
+        // Knife: leave vanilla iron-sword damage; gold is throttled separately.
+        if (id == WeaponId.KNIFE) {
+            if (event.getEntity() instanceof LivingEntity living) {
+                plugin.getWeaponCombat().knifeGold(player, living, event.isCritical(), event.getFinalDamage());
+            }
+            return;
         }
+        event.setCancelled(true);
+        if (!(event.getEntity() instanceof LivingEntity living)) {
+            return;
+        }
+        if (id.melee()) {
+            plugin.getWeaponCombat().meleeHit(player, living);
+            return;
+        }
+        plugin.getWeaponCombat().gunBash(player, living);
     }
 
     @EventHandler
@@ -94,6 +123,9 @@ public final class WeaponListener implements Listener {
     @EventHandler
     public void onHeld(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
-        player.getScheduler().run(plugin, task -> plugin.getWeaponCombat().hud(player), null);
+        player.getScheduler().run(plugin, task -> {
+            plugin.getWeaponCombat().hud(player);
+            plugin.getWeaponCombat().held(player);
+        }, null);
     }
 }

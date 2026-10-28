@@ -6,13 +6,14 @@ public enum EditMode {
     PRICE,
     ARMOR_PRICE,
     MARK,
-    DOOR_BLOCKS;
+    DOOR_BLOCKS,
+    MACHINE_BLOCKS;
 
     public boolean marksBlock() {
         return this == MARK;
     }
 
     public boolean placesDoor() {
-        return this == DOOR_BLOCKS;
+        return this == DOOR_BLOCKS || this == MACHINE_BLOCKS;
     }
 }

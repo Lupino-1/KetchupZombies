@@ -1,10 +1,24 @@
 prefix: "&8[&cKetchup&fZombies&8] &r"
 
+# LPCommand built-in keys (CommandMessageKeys.defaults)
+command:
+  no-permission: "&cYou do not have permission."
+  usage: "&cUsage: &f%usage%"
+  player-only: "&cPlayers only."
+  console-only: "&cConsole only."
+
 cmd:
   no-perm: "&cYou do not have permission."
   usage: "&cUsage: &f%usage%"
   player: "&cPlayers only."
   console: "&cConsole only."
+  reloaded: "&aReloaded config, messages and holograms. Running matches keep old settings. Map changes: /kz refresh <name>."
+  scoreboard-on: "&aMatch scoreboard preview on (hub hidden). &7/kz scoreboard &ato hide."
+  scoreboard-off: "&7Match preview off. Hub board restored."
+  setspawn: "&aHub spawn set. Players land here after a match and with /spawn."
+  spawn: "&aTeleported to hub spawn."
+  spawn-busy: "&cYou cannot use /spawn while in a game, queue, or the arena editor."
+  spawn-unset: "&cHub spawn is not set. Use /kz setspawn first."
 
 editor:
   loading: "&7Loading arena..."
@@ -20,6 +34,7 @@ editor:
   window-created: "&aWindow created. Left-click it to set the corners and the zombie spawn."
   removed-window: "&aRemoved window."
   corner-set: "&aCorner &f%n% &aset to &f%pos%&a."
+  repair-corner-set: "&aRepair corner &f%n% &aset to &f%pos%&a."
   saving-window: "&7Saving window..."
   window-saved: "&aWindow area saved."
   removed: "&aRemoved."
@@ -32,12 +47,15 @@ editor:
   mark-block: "&eLeft-click a block, or type &fleave&e."
   place-blocks-hint: "&ePlace blocks, or type &fleave&e."
   door-block-added: "&aDoor block added. Place another, or type &fleave&a."
+  place-machine-blocks: "&ePlace blocks. Each placed block is part of the ultimate machine. Type &fleave &eto stop."
+  machine-block-added: "&aMachine block added. Place another, or type &fleave&a."
   type-name: "&eType a name. Letters and numbers only, or &fleave&e."
   name-set: "&aName set to &f%name%&a."
   price-set: "&aPrice set to &f%price%&a."
   power-set: "&aPower hologram set at &f%pos%&a."
+  arena-spawn-set: "&aArena spawn set at &f%pos%&a."
   hologram-saved: "&aHologram coordinate saved at &f%pos%&a."
-  door-hologram-set: "&aHologram &f%n% &aset to &f%pos%&a."
+  door-hologram-set: "&aHologram &f%from% -> %to% &aset at &f%pos%&a."
   spawn-set: "&aZombie spawn set to &f%pos%&a."
   armor-set: "&aArmor offer saved for &f%price%&a."
   armor-default: "&aThis shop uses the default armor prices again."
@@ -54,14 +72,19 @@ weapon:
 
 shop:
   bought: "&aBought &f%item% &afor &f%price%&a gold."
+  sold: "&aSold &f%item% &afor &f%price%&a gold."
+  refilled: "&aRefilled &f%item% &afor &f%price%&a gold."
   poor: "&cNot enough gold."
-  owned: "&eYou already have that perk."
+  owned: "&eYou already have that."
+  owned-refill: "&eYou already own &f%item%&e. Refilling ammo for &f%price%&e gold."
+  gun-full: "&cSelect that weapon or an empty weapon slot."
   perk-full: "&cYou can only hold three perks."
   power-off: "&cTurn the power on first."
   power-on: "&aPower is on."
   power-off-done: "&7Power is off."
   armor-empty: "&cThat armor offer has no pieces."
   armor-kept: "&eYou already wear better armor."
+  gun-slot: "&aExtra weapon slot unlocked."
   gold: "&aGold set to &f%gold%&a."
 
 score:
@@ -77,31 +100,85 @@ copy:
   ready: "&aCopy &f%index% &ais ready at &f%x% %y% %z%&a."
   refresh: "&7Refreshing copies from the blueprint..."
   recapture: "&7Reading the blueprint from the world..."
-  refreshed: "&aRefreshed &f%count% &acopies."
+  refreshed: "&aRefreshed &f%count% &aplaces (origin + copies)."
+  blueprint-tp: "&aTeleported to blueprint &f%name%&a."
+  blueprint-missing: "&cThat arena or world is missing."
 
 party:
+  help: "&eParty: &f/party invite <player>&7, &faccept&7, &fdeny&7, &flist&7, &fleave&7, &fkick <player>&7, &fdisband"
   invited: "&aInvited &f%name%&a."
-  invite: "&e%name% &ainvited you. &f/kz party accept"
+  # MiniMessage click/hover — editable. Commands: /party accept | /party deny
+  invite: "&e%name% &ainvited you to their party. <click:run_command:'/party accept'><hover:show_text:'&aClick to accept'><green><bold>[ACCEPT]</bold></green></hover></click> &7or <click:run_command:'/party deny'><hover:show_text:'&cClick to deny'><red><bold>[DENY]</bold></red></hover></click>"
   joined: "&aYou joined the party."
+  member-joined: "&a%name% &ajoined the party."
+  member-left: "&7%name% &7left the party."
   left: "&7You left the party."
-  list: "&7Party: &f%names%"
+  list: "&7Party: &f%names% &8(* = leader)"
+  list-alone: "&7You are not in a party. &f/party invite <player>"
+  denied: "&7Invite declined."
+  kicked: "&aKicked &f%name%&a."
+  you-kicked: "&cYou were kicked from the party."
+  offline-removed: "&7%name% &7was removed from the party."
+  leader-passed: "&7%name% &7left. &f%leader% &7is now the party leader."
+  now-leader: "&eYou are now the party leader."
+  disbanded: "&7The party was disbanded."
 
 join:
   preparing: "&7Preparing a copy..."
-  queued: "&eWaiting for a full team. &f%count%&e/4"
+  queued: "&eQueued. Teleporting to the arena lobby. &f%count%&e/4"
+  queue-update: "&eQueue: &f%count%&e/4"
+  queue-left: "&7You left the lobby."
+  countdown: "&eStarting in &f%time%s&e. &7/kz leave &eto leave."
+  # Title for the last 5 seconds. Placeholder %time%
+  countdown-title: "&e&l%time%"
+  countdown-subtitle: ""
+  countdown-cancel: "&cCountdown cancelled."
 
 game:
-  round: "&eRound &f%round%"
+  # Lists: every line is sent to the team (placeholders work per line).
+  round:
+    - "&eRound &f%round%"
   wave: "&eWave &f%wave%&e/&f%waves% &7(round %round%)"
-  clear: "&aRound clear."
-  win: "&aYou cleared round 3."
-  lose: "&cThe team is down."
-  downed: "&cYou are down. A teammate can revive you."
+  clear:
+    - "&aRound clear."
+  win:
+    - "&a&lVICTORY"
+    - "&7You cleared the match."
+  lose:
+    - "&c&lDEFEAT"
+    - "&7The team is down."
+  # sendTitle on match end. Placeholder %round%. Endless uses survived-* once that mode exists.
+  win-title: "&a&lYou win"
+  win-subtitle: ""
+  lose-title: "&c&lYou lost"
+  lose-subtitle: ""
+  survived-title: "&a&lSurvived till round %round%"
+  survived-subtitle: ""
+  downed: "&cYou are down. A teammate can sneak near you to revive."
+  # sendTitle to the whole team on knockdown. Placeholders: %player% %section% %round%
+  death-title: "&c%player%"
+  death-subtitle: "&7Knocked down in &f%section%"
+  dead: "&8You are DEAD until the next round. Perks lost."
   revived: "&aRevived."
+  revive-hint: "&eSneak to revive"
+  reviving: "&aReviving... &f%time%s"
+  # Hologram above downed body: seconds until DEAD
+  revive-timer: "&c%time%s"
+  dead-timer: "&8DEAD"
   door: "&aDoor opened."
-  door-open: "&7That door is already open."
   power: "&aPower is on."
+  upgraded: "&aUpgraded &f%item% &afor &f%price%&a gold."
+  upgrade-hold: "&cHold the gun you want to upgrade."
+  upgrade-max: "&eThat gun is already fully upgraded."
+  lucky-spin: "&eThe chest is spinning."
+  lucky-wait: "&eWait until the chest finishes."
+  lucky-claim: "&aYou won &f%item%&a. Click the chest with the right slot."
+  lucky-taken: "&aTook &f%item%&a."
+  lucky-missed: "&7The gun disappeared."
+  door-open: "&7That door is already open."
   window: "&eMove closer to a window."
+  repair: "&6+%gold% gold &7(window)"
+  repair-cancel: "&7You walked away from the window."
   left: "&7You left the game."
 
 test:
@@ -110,12 +187,3 @@ test:
   pasting: "&7Pasting..."
   pasted: "&aPasted. Empty spots are air."
 
-hologram:
-  weapons: "&6Weapon shop"
-  armor: "&7Armor shop"
-  lucky-chests: "&eLucky chest"
-  upgraders: "&bWeapon upgrader"
-  perks: "&aPerks"
-  power: "&cPower"
-  door: "&7Door"
-  door-price: "&6%price%"

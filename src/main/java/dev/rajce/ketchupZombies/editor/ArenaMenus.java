@@ -6,8 +6,10 @@ import dev.rajce.ketchupZombies.models.ArenaData;
 import dev.rajce.ketchupZombies.models.ArenaDoor;
 import dev.rajce.ketchupZombies.models.ArenaSection;
 import dev.rajce.ketchupZombies.models.ArenaWindow;
+import dev.rajce.ketchupZombies.models.BlockPoint;
 import dev.rajce.ketchupZombies.models.FinePoint;
 import dev.rajce.ketchupZombies.models.SpotKind;
+import dev.rajce.ketchupZombies.models.UltimateMachine;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -48,11 +50,19 @@ public final class ArenaMenus {
         gui.setItem(11, hubButton(Material.OAK_DOOR, "Doors", data.doors().size(), "A path between two sections. Bought doors remove their blocks."), event -> open(event, () -> editor.showDoors(player)));
         gui.setItem(12, hubButton(Material.GLASS_PANE, "Windows", data.windows().size(), "A flat 2x2 or 2x3 area. It rebuilds during the game."), event -> open(event, () -> editor.showWindows(player)));
         gui.setItem(13, hubButton(SpotKind.WEAPONS.icon(), "Weapon shops", data.spots(SpotKind.WEAPONS).size(), "Left-click a shop to pick which weapons it sells."), event -> open(event, () -> editor.showSpots(player, SpotKind.WEAPONS)));
-        gui.setItem(21, hubButton(SpotKind.ARMOR.icon(), "Armor shops", data.spots(SpotKind.ARMOR).size(), "Pick the pieces sold here and one price. Better armor is kept."), event -> open(event, () -> editor.showSpots(player, SpotKind.ARMOR)));
-        gui.setItem(14, hubButton(SpotKind.LUCKY_CHESTS.icon(), "Lucky chests", data.spots(SpotKind.LUCKY_CHESTS).size(), "Hologram coordinates for the lucky chest."), event -> open(event, () -> editor.showSpots(player, SpotKind.LUCKY_CHESTS)));
-        gui.setItem(15, hubButton(SpotKind.UPGRADERS.icon(), "Weapon upgraders", data.spots(SpotKind.UPGRADERS).size(), "Hologram coordinates. The upgrader works after power is on."), event -> open(event, () -> editor.showSpots(player, SpotKind.UPGRADERS)));
+        gui.setItem(21, hubButton(SpotKind.ARMOR.icon(), "Armor shops", data.spots(SpotKind.ARMOR).size(), "Wall set: helmet/chest/legs/boots + one price. Click buys all — no menu."), event -> open(event, () -> editor.showSpots(player, SpotKind.ARMOR)));
+        gui.setItem(14, hubButton(SpotKind.LUCKY_CHESTS.icon(), "Lucky chests", data.spots(SpotKind.LUCKY_CHESTS).size(), "Left-click the block that becomes the chest. Text sits above it."), event -> open(event, () -> editor.showSpots(player, SpotKind.LUCKY_CHESTS)));
+        gui.setItem(15, hubButton(Material.ANVIL, "Ultimate machines", data.machines().size(), "Like a door: set the blocks and one hologram. Click with a gun after power is on."), event -> open(event, () -> editor.showMachines(player)));
         gui.setItem(16, hubButton(SpotKind.PERKS.icon(), "Perks", data.spots(SpotKind.PERKS).size(), "Hologram coordinates. Perks work after power is on."), event -> open(event, () -> editor.showSpots(player, SpotKind.PERKS)));
         gui.setItem(22, hubButton(SpotKind.POWER.icon(), "Power switch", data.spots(SpotKind.POWER).size(), "One hologram for the whole arena. It turns power on."), event -> open(event, () -> editor.showSpots(player, SpotKind.POWER)));
+        gui.setItem(24, ItemBuilder.of(data.spawn() == null ? Material.GRAY_BED : Material.RED_BED)
+                .name("&eArena spawn")
+                .lore(
+                        "&7Current: &f" + point(data.spawn()),
+                        "&7Players land here in lobby and at match start.",
+                        "&aLeft click: &7stand where they should spawn and left-click.",
+                        "&cRight click: &7clear (falls back to first section center)."
+                ).build(), event -> editor.clickArenaSpawn(player, MenuClick.of(event)));
         gui.setItem(31, ItemBuilder.of(Material.BARRIER).name("&cClose").lore("&7Stops editing. Saved markers stay in the file.", "&aLeft click: &7close.").build(), event -> open(event, () -> editor.closeEdit(player)));
         gui.setItem(33, ItemBuilder.of(Material.TNT).name("&cDelete arena").lore("&7Deletes the arena file and the blueprint.", "&cRight click: &7delete. This cannot be undone.").build(), event -> editor.deleteArena(player, MenuClick.of(event)));
         gui.open(player);
@@ -91,7 +101,14 @@ public final class ArenaMenus {
                 break;
             }
             String key = door.key();
-            gui.setItem(slot++, ItemBuilder.of(Material.OAK_DOOR).name("&e" + door.format()).lore("&7Blocks: &f" + door.blocks().size(), "&7Price: &f" + price(door.price()), "&7Hologram 1: &f" + point(door.hologramA()), "&7Hologram 2: &f" + point(door.hologramB()), "&aLeft click: &7edit blocks, price and holograms.", "&cRight click: &7delete this door.").build(), event -> editor.clickDoor(player, key, MenuClick.of(event)));
+            gui.setItem(slot++, ItemBuilder.of(Material.OAK_DOOR).name("&e" + door.format()).lore(
+                    "&7Blocks: &f" + door.blocks().size(),
+                    "&7Price: &f" + price(door.price()),
+                    "&7" + door.from() + " -> " + door.to() + ": &f" + point(door.hologramA()),
+                    "&7" + door.to() + " -> " + door.from() + ": &f" + point(door.hologramB()),
+                    "&aLeft click: &7edit blocks, price and holograms.",
+                    "&cRight click: &7delete this door."
+            ).build(), event -> editor.clickDoor(player, key, MenuClick.of(event)));
         }
         gui.setItem(49, addButton("Add door", "Pick two sections, then create the door."), event -> open(event, () -> editor.beginDoor(player)));
         gui.open(player);
@@ -128,9 +145,65 @@ public final class ArenaMenus {
         }
         gui.setItem(10, ItemBuilder.of(Material.OAK_DOOR).name("&eDoor blocks").lore("&7Current: &f" + door.blocks().size(), "&7Blocks you place here disappear after the door is bought.", "&aLeft click: &7place blocks in the world. Type leave to stop.", "&cRight click: &7clear every stored door block.").build(), event -> editor.clickDoorBlocks(player, MenuClick.of(event)));
         gui.setItem(12, ItemBuilder.of(door.price() == null ? Material.GRAY_CONCRETE : Material.GOLD_INGOT).name("&ePrice").lore("&7Current: &f" + price(door.price()), "&7One price for both sides.", "&aLeft click: &7type a whole number in chat.", "&cRight click: &7clear the price.").build(), event -> editor.clickDoorPrice(player, MenuClick.of(event)));
-        gui.setItem(14, ItemBuilder.of(door.hologramA() == null ? Material.GRAY_CONCRETE : Material.LIME_CONCRETE).name("&eHologram 1").lore("&7Current: &f" + point(door.hologramA()), "&7One side of the door. Saves where you stand.", "&aLeft click: &7stand on the spot and left-click.", "&cRight click: &7clear this hologram.").build(), event -> editor.clickDoorHologram(player, 0, MenuClick.of(event)));
-        gui.setItem(16, ItemBuilder.of(door.hologramB() == null ? Material.GRAY_CONCRETE : Material.LIME_CONCRETE).name("&eHologram 2").lore("&7Current: &f" + point(door.hologramB()), "&7The other side of the door. Saves where you stand.", "&aLeft click: &7stand on the spot and left-click.", "&cRight click: &7clear this hologram.").build(), event -> editor.clickDoorHologram(player, 1, MenuClick.of(event)));
+        gui.setItem(14, ItemBuilder.of(door.hologramA() == null ? Material.GRAY_CONCRETE : Material.LIME_CONCRETE)
+                .name("&e" + door.from() + " -> " + door.to())
+                .lore(
+                        "&7Current: &f" + point(door.hologramA()),
+                        "&7Place in &f" + door.from() + "&7. Text %section% = &f" + door.to() + "&7.",
+                        "&aLeft click: &7stand on the spot and left-click.",
+                        "&cRight click: &7clear this hologram."
+                ).build(), event -> editor.clickDoorHologram(player, 0, MenuClick.of(event)));
+        gui.setItem(16, ItemBuilder.of(door.hologramB() == null ? Material.GRAY_CONCRETE : Material.LIME_CONCRETE)
+                .name("&e" + door.to() + " -> " + door.from())
+                .lore(
+                        "&7Current: &f" + point(door.hologramB()),
+                        "&7Place in &f" + door.to() + "&7. Text %section% = &f" + door.from() + "&7.",
+                        "&aLeft click: &7stand on the spot and left-click.",
+                        "&cRight click: &7clear this hologram."
+                ).build(), event -> editor.clickDoorHologram(player, 1, MenuClick.of(event)));
         gui.setItem(22, backButton(), event -> open(event, () -> editor.showDoors(player)));
+        gui.open(player);
+    }
+
+    public void machines(Player player, EditorSession session) {
+        Gui gui = list("&8Ultimate machines", () -> editor.showHub(player));
+        int slot = 0;
+        for (UltimateMachine machine : session.data().machines().values()) {
+            if (slot >= 45) {
+                break;
+            }
+            String id = machine.id();
+            gui.setItem(slot++, ItemBuilder.of(Material.ANVIL).name("&e" + id).lore(
+                    "&7Blocks: &f" + machine.blocks().size(),
+                    "&7Hologram: &f" + point(machine.hologram()),
+                    "&aLeft click: &7edit.",
+                    "&cRight click: &7delete."
+            ).build(), event -> editor.clickMachine(player, id, MenuClick.of(event)));
+        }
+        gui.setItem(49, addButton("Add machine", "Creates another ultimate station. Then set its blocks and hologram."), event -> open(event, () -> editor.beginMachine(player)));
+        gui.open(player);
+    }
+
+    public void machineEdit(Player player, EditorSession session) {
+        UltimateMachine machine = session.data().machines().get(session.machineId());
+        Gui gui = new Gui(editor.plugin(), 3, "&8Ultimate machine");
+        if (machine == null) {
+            gui.setItem(13, ItemBuilder.of(Material.BARRIER).name("&cMachine missing").lore("&7It was deleted.").build(), event -> open(event, () -> editor.showMachines(player)));
+            gui.open(player);
+            return;
+        }
+        gui.setItem(11, ItemBuilder.of(Material.ANVIL).name("&eMachine blocks").lore(
+                "&7Current: &f" + machine.blocks().size(),
+                "&7Blocks you place here are the machine.",
+                "&aLeft click: &7place blocks in the world. Type leave to stop.",
+                "&cRight click: &7clear every stored block."
+        ).build(), event -> editor.clickMachineBlocks(player, MenuClick.of(event)));
+        gui.setItem(15, ItemBuilder.of(machine.hologram() == null ? Material.GRAY_CONCRETE : Material.LIME_CONCRETE).name("&eHologram").lore(
+                "&7Current: &f" + point(machine.hologram()),
+                "&aLeft click: &7stand on the spot and left-click.",
+                "&cRight click: &7clear this hologram."
+        ).build(), event -> editor.clickMachineHologram(player, MenuClick.of(event)));
+        gui.setItem(22, backButton(), event -> open(event, () -> editor.showMachines(player)));
         gui.open(player);
     }
 
@@ -151,7 +224,7 @@ public final class ArenaMenus {
 
     public void windowForm(Player player, EditorSession session) {
         ArenaWindow window = window(session);
-        Gui gui = new Gui(editor.plugin(), 3, "&8Window settings");
+        Gui gui = new Gui(editor.plugin(), 4, "&8Window settings");
         if (window == null) {
             gui.setItem(13, ItemBuilder.of(Material.BARRIER).name("&cWindow missing").lore("&7It was deleted.").build(), event -> open(event, () -> editor.showWindows(player)));
             gui.open(player);
@@ -161,7 +234,9 @@ public final class ArenaMenus {
         gui.setItem(12, valueButton(session.windowCorner1() == null ? Material.GRAY_CONCRETE : Material.LIME_CONCRETE, "Corner 1", format(session.windowCorner1()), "Left-click one corner of the window area.", "Clear this corner."), event -> editor.clickWindowCorner(player, 1, MenuClick.of(event)));
         gui.setItem(14, valueButton(session.windowCorner2() == null ? Material.GRAY_CONCRETE : Material.LIME_CONCRETE, "Corner 2", format(session.windowCorner2()), "Left-click the opposite corner. The area must be a flat 2x2 or 2x3.", "Clear this corner."), event -> editor.clickWindowCorner(player, 2, MenuClick.of(event)));
         gui.setItem(16, valueButton(window.spawn() == null ? Material.GRAY_CONCRETE : Material.LIME_CONCRETE, "Spawn point", point(window.spawn()), "Stand where zombies should spawn and left-click.", "Clear the spawn."), event -> editor.clickWindowSpawn(player, MenuClick.of(event)));
-        gui.setItem(22, backButton(), event -> open(event, () -> editor.showWindows(player)));
+        gui.setItem(19, valueButton(window.repair1() == null ? Material.GRAY_CONCRETE : Material.ORANGE_CONCRETE, "Repair corner 1", block(window.repair1()), "Left-click one corner of the sneak-to-repair zone (block coords).", "Clear this corner."), event -> editor.clickWindowRepair(player, 1, MenuClick.of(event)));
+        gui.setItem(21, valueButton(window.repair2() == null ? Material.GRAY_CONCRETE : Material.ORANGE_CONCRETE, "Repair corner 2", block(window.repair2()), "Left-click the opposite corner. Without both corners repair is disabled.", "Clear this corner."), event -> editor.clickWindowRepair(player, 2, MenuClick.of(event)));
+        gui.setItem(31, backButton(), event -> open(event, () -> editor.showWindows(player)));
         gui.open(player);
     }
 
@@ -194,7 +269,7 @@ public final class ArenaMenus {
             }
             int slot = index;
             gui.setItem(index++, ItemBuilder.of(kind.icon()).name("&e" + point.format()).lore(kind == SpotKind.ARMOR
-                    ? new String[]{"&7Hologram coordinate. The block itself is not used.", "&aLeft click: &7pieces and price.", "&cRight click: &7remove this hologram."}
+                    ? new String[]{"&7Hologram coordinate. The block itself is not used.", "&aLeft click: &7set the wall armor pieces + price.", "&cRight click: &7remove this hologram."}
                     : kind == SpotKind.WEAPONS
                     ? new String[]{"&7Hologram coordinate. The block itself is not used.", "&aLeft click: &7pick weapons for this shop.", "&cRight click: &7remove this hologram."}
                     : new String[]{"&7Hologram coordinate. The block itself is not used.", "&cRight click: &7remove this hologram."}).build(), event -> editor.clickSpot(player, kind, slot, MenuClick.of(event)));
@@ -243,6 +318,10 @@ public final class ArenaMenus {
     }
 
     private static String point(FinePoint point) {
+        return point == null ? "Not set" : point.format();
+    }
+
+    private static String block(BlockPoint point) {
         return point == null ? "Not set" : point.format();
     }
 

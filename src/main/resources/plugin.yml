@@ -7,3 +7,133 @@ authors: [ Lupino1 ]
 
 folia-supported: true
 softdepend: [PlaceholderAPI]
+
+permissions:
+  ketchupzombies.command:
+    description: Use /ketchupzombies (/kz) base command
+    default: true
+
+  ketchupzombies.command.player:
+    description: All normal gameplay commands
+    default: true
+    children:
+      ketchupzombies.command: true
+      ketchupzombies.command.join: true
+      ketchupzombies.command.leave: true
+      ketchupzombies.command.spawn: true
+      ketchupzombies.command.party: true
+      ketchupzombies.command.party.invite: true
+      ketchupzombies.command.party.accept: true
+      ketchupzombies.command.party.deny: true
+      ketchupzombies.command.party.leave: true
+      ketchupzombies.command.party.kick: true
+      ketchupzombies.command.party.disband: true
+      ketchupzombies.command.party.list: true
+      ketchupzombies.command.top: true
+
+  ketchupzombies.command.join:
+    description: Queue into an arena (/kz join)
+    default: true
+  ketchupzombies.command.leave:
+    description: Leave queue or match (/leave)
+    default: true
+  ketchupzombies.command.spawn:
+    description: Teleport to hub spawn (/spawn)
+    default: true
+  ketchupzombies.command.party:
+    description: Party help (/party)
+    default: true
+  ketchupzombies.command.party.invite:
+    description: Invite a player to your party
+    default: true
+  ketchupzombies.command.party.accept:
+    description: Accept a party invite
+    default: true
+  ketchupzombies.command.party.deny:
+    description: Deny a party invite
+    default: true
+  ketchupzombies.command.party.leave:
+    description: Leave your party
+    default: true
+  ketchupzombies.command.party.kick:
+    description: Kick a member from your party
+    default: true
+  ketchupzombies.command.party.disband:
+    description: Disband your party
+    default: true
+  ketchupzombies.command.party.list:
+    description: List party members
+    default: true
+  ketchupzombies.command.top:
+    description: View score leaderboards (/kz top)
+    default: true
+
+  ketchupzombies.command.admin:
+    description: All admin / editor / test commands
+    default: op
+    children:
+      ketchupzombies.command.createarena: true
+      ketchupzombies.command.editarena: true
+      ketchupzombies.command.copy: true
+      ketchupzombies.command.setspawn: true
+      ketchupzombies.command.reload: true
+      ketchupzombies.command.refresh: true
+      ketchupzombies.command.recapture: true
+      ketchupzombies.command.blueprint: true
+      ketchupzombies.command.test: true
+      ketchupzombies.command.weapon: true
+      ketchupzombies.command.zombie: true
+      ketchupzombies.command.gold: true
+      ketchupzombies.command.shop: true
+      ketchupzombies.command.perks: true
+      ketchupzombies.command.score: true
+      ketchupzombies.command.scoreboard: true
+
+  ketchupzombies.command.createarena:
+    description: Open arena create editor
+    default: op
+  ketchupzombies.command.editarena:
+    description: Edit an existing arena
+    default: op
+  ketchupzombies.command.copy:
+    description: Paste arena blueprint copies
+    default: op
+  ketchupzombies.command.setspawn:
+    description: Set hub spawn
+    default: op
+  ketchupzombies.command.reload:
+    description: Reload config and messages
+    default: op
+  ketchupzombies.command.refresh:
+    description: Refresh arena holograms / instance
+    default: op
+  ketchupzombies.command.recapture:
+    description: Recapture arena blueprint
+    default: op
+  ketchupzombies.command.blueprint:
+    description: Teleport to arena blueprint origin
+    default: op
+  ketchupzombies.command.test:
+    description: Blueprint test tool
+    default: op
+  ketchupzombies.command.weapon:
+    description: Give a test weapon
+    default: op
+  ketchupzombies.command.zombie:
+    description: Spawn a test zombie
+    default: op
+  ketchupzombies.command.gold:
+    description: Set gold for testing
+    default: op
+  ketchupzombies.command.shop:
+    description: Open test weapon shop GUI
+    default: op
+  ketchupzombies.command.perks:
+    description: Open test perks GUI
+    default: op
+  ketchupzombies.command.score:
+    description: Record a test score
+    default: op
+  ketchupzombies.command.scoreboard:
+    description: Toggle match scoreboard preview
+    default: op

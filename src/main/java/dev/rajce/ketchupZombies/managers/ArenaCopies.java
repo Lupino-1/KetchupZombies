@@ -83,6 +83,7 @@ public final class ArenaCopies {
         int offsetZ = plugin.config().copies.offsetZ;
         Location origin = origin(loaded, index, offsetX, offsetZ);
         blueprints.paste(loaded.stored.blueprint(), origin, () -> {
+            holograms.remember(loaded.data.name(), loaded.stored.blueprint());
             holograms.showArena(loaded.data, index);
             FoliaManager.runAtEntity(player, () -> {
                 if (!player.isOnline()) {
@@ -165,7 +166,15 @@ public final class ArenaCopies {
 
     private void pasteChain(Player player, Loaded loaded) {
         FoliaManager.runAsync(() -> {
-            List<Integer> indexes = instances.indexesNow(loaded.data.name());
+            // Index 0 = blueprint origin — always reset from stored JSON so copies can be regenerated
+            // even if the world / instance list was wiped.
+            List<Integer> indexes = new java.util.ArrayList<>();
+            indexes.add(0);
+            for (int index : instances.indexesNow(loaded.data.name())) {
+                if (index > 0) {
+                    indexes.add(index);
+                }
+            }
             FoliaManager.runAtEntity(player, () -> pasteAt(player, loaded, indexes, 0));
         });
     }
@@ -175,10 +184,8 @@ public final class ArenaCopies {
             return;
         }
         if (cursor >= indexes.size()) {
-            holograms.showArena(loaded.data, 0);
-            for (int index : indexes) {
-                holograms.showArena(loaded.data, index);
-            }
+            holograms.remember(loaded.data.name(), loaded.stored.blueprint());
+            holograms.showRefreshed(loaded.data, indexes);
             plugin.getMessageManager().send(player, "copy.refreshed", Map.of("count", Integer.toString(indexes.size())));
             return;
         }
@@ -192,6 +199,33 @@ public final class ArenaCopies {
         int index = indexes.get(cursor);
         Location origin = origin(loaded, index, plugin.config().copies.offsetX, plugin.config().copies.offsetZ);
         blueprints.paste(loaded.stored.blueprint(), origin, () -> FoliaManager.runAtEntity(player, () -> pasteAt(player, loaded, indexes, cursor + 1)));
+    }
+
+    /** Admin TP to blueprint origin (index 0): arena spawn if set, else min corner. */
+    public void teleportBlueprint(Player player, String name) {
+        if (!Names.valid(name)) {
+            reply(player, "&cName must be 1-32 letters and numbers.");
+            return;
+        }
+        load(player, name, loaded -> {
+            World world = plugin.getServer().getWorld(loaded.stored.worldName());
+            if (world == null) {
+                plugin.getMessageManager().send(player, "copy.blueprint-missing");
+                return;
+            }
+            loaded.stored.blueprint().getCorner1().setWorld(world);
+            loaded.stored.blueprint().getCorner2().setWorld(world);
+            Location dest = plugin.getGames().arenaSpawn(loaded.data, 0);
+            if (dest == null || dest.getWorld() == null) {
+                dest = origin(loaded, 0, plugin.config().copies.offsetX, plugin.config().copies.offsetZ).add(0.5, 1, 0.5);
+            }
+            Location target = dest;
+            player.teleportAsync(target).thenRun(() -> FoliaManager.runAtEntity(player, () -> {
+                if (player.isOnline()) {
+                    plugin.getMessageManager().send(player, "copy.blueprint-tp", Map.of("name", name));
+                }
+            }));
+        });
     }
 
     private Location origin(Loaded loaded, int index, int offsetX, int offsetZ) {
@@ -264,6 +298,7 @@ public final class ArenaCopies {
                     loaded.stored.blueprint().getCorner2().setWorld(world);
                     Location origin = origin(loaded, claimed, plugin.config().copies.offsetX, plugin.config().copies.offsetZ);
                     blueprints.paste(loaded.stored.blueprint(), origin, () -> {
+                        holograms.remember(loaded.data.name(), loaded.stored.blueprint());
                         holograms.showArena(loaded.data, claimed);
                         FoliaManager.runAtEntity(player, () -> {
                             if (!player.isOnline()) {
@@ -295,6 +330,7 @@ public final class ArenaCopies {
             Location origin = origin(loaded, index, plugin.config().copies.offsetX, plugin.config().copies.offsetZ);
             blueprints.paste(loaded.stored.blueprint(), origin, () -> {
                 if (loaded.data != null) {
+                    holograms.remember(loaded.data.name(), loaded.stored.blueprint());
                     holograms.showArena(loaded.data, index);
                 }
                 release(name, index);

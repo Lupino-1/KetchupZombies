@@ -23,14 +23,14 @@ public final class Queues {
             open.parties.add(Set.copyOf(party));
             if (open.count() == 4) {
                 slots.remove(open);
-                return new Offer(true, 4, open.members());
+                return new Offer(true, 4, open.members(), open.id);
             }
-            return new Offer(false, open.count(), List.of());
+            return new Offer(false, open.count(), open.members(), open.id);
         }
         Slot waiting = new Slot();
         waiting.parties.add(Set.copyOf(party));
         slots.add(waiting);
-        return new Offer(false, waiting.count(), List.of());
+        return new Offer(false, waiting.count(), waiting.members(), waiting.id);
     }
 
     public synchronized void drop(UUID player) {
@@ -42,10 +42,24 @@ public final class Queues {
         }
     }
 
-    public record Offer(boolean start, int count, List<UUID> players) {
+    public synchronized UUID slotOf(UUID player) {
+        for (List<Slot> slots : rows.values()) {
+            for (Slot slot : slots) {
+                for (Set<UUID> party : slot.parties) {
+                    if (party.contains(player)) {
+                        return slot.id;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public record Offer(boolean start, int count, List<UUID> players, UUID slotId) {
     }
 
     private static final class Slot {
+        private final UUID id = UUID.randomUUID();
         private final List<Set<UUID>> parties = new ArrayList<>();
 
         private int count() {

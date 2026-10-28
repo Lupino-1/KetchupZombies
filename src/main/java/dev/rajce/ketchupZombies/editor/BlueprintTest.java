@@ -18,8 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class BlueprintTest {
 
-    public static final int SPAN_XZ = 156;
-    public static final int SPAN_Y = 32;
+    /** Blocks from the player in each direction (X/Y/Z). */
+    public static final int RADIUS = 8;
 
     private final KetchupZombies plugin;
     private final BlueprintManager blueprints;
@@ -32,13 +32,23 @@ public final class BlueprintTest {
     }
 
     public void open(Player player) {
+        int size = RADIUS * 2 + 1;
         Gui gui = new Gui(plugin, 1, "&8Blueprint test");
-        gui.setItem(2, ItemBuilder.of(Material.PAPER).name("&eCopy").lore("&7Copies a 156x32x156 area around you into memory.", "&aLeft click: &7copy.").build(), event -> {
+        gui.setItem(2, ItemBuilder.of(Material.PAPER).name("&eCopy").lore(
+                "&7Copies a " + size + "x" + size + "x" + size + " area around you into memory.",
+                "&7(" + RADIUS + " blocks each side, including down).",
+                "&aLeft click: &7copy."
+        ).build(), event -> {
             if (MenuClick.of(event) == MenuClick.LEFT) {
                 copy(player);
             }
         });
-        gui.setItem(6, ItemBuilder.of(Material.SLIME_BLOCK).name("&aPaste").lore("&7Places the copy with its minimum corner at your feet.", "&7Spots that were empty become air.", "&aLeft click: &7paste.").build(), event -> {
+        gui.setItem(6, ItemBuilder.of(Material.SLIME_BLOCK).name("&aPaste").lore(
+                "&7Places the copy with its minimum corner at your feet.",
+                "&7Spots that were empty become air.",
+                "&7Player heads keep custom textures.",
+                "&aLeft click: &7paste."
+        ).build(), event -> {
             if (MenuClick.of(event) == MenuClick.LEFT) {
                 paste(player);
             }
@@ -55,9 +65,8 @@ public final class BlueprintTest {
         int x = player.getLocation().getBlockX();
         int y = player.getLocation().getBlockY();
         int z = player.getLocation().getBlockZ();
-        int half = SPAN_XZ / 2;
-        Location first = new Location(world, x - half, y, z - half);
-        Location second = new Location(world, x - half + SPAN_XZ - 1, y + SPAN_Y - 1, z - half + SPAN_XZ - 1);
+        Location first = new Location(world, x - RADIUS, y - RADIUS, z - RADIUS);
+        Location second = new Location(world, x + RADIUS, y + RADIUS, z + RADIUS);
         plugin.getMessageManager().send(player, "test.copying");
         blueprints.capture(new Blueprint(first, second)).whenComplete((captured, error) -> FoliaManager.runAtEntity(player, () -> {
             copying.remove(player.getUniqueId());

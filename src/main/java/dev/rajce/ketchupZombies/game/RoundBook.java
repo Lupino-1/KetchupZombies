@@ -14,7 +14,7 @@ import java.util.List;
 
 public final class RoundBook {
 
-    public record Mob(String type, int count, double health, double damage, double armor, double speed) {
+    public record Mob(String type, int count, double health, double damage, double armor, double speed, double followRange) {
     }
 
     public record Wave(List<Mob> mobs) {
@@ -39,7 +39,8 @@ public final class RoundBook {
                                 group.get("health").getAsDouble(),
                                 group.get("attackDamage").getAsDouble(),
                                 group.has("armor") ? group.get("armor").getAsDouble() : 0,
-                                group.has("speed") ? group.get("speed").getAsDouble() : 0.23
+                                group.has("speed") ? group.get("speed").getAsDouble() : 0.23,
+                                group.has("followRange") ? group.get("followRange").getAsDouble() : 100
                         ));
                     }
                     waves.add(new Wave(List.copyOf(mobs)));
@@ -53,7 +54,7 @@ public final class RoundBook {
 
     public List<Wave> waves(int number) {
         if (number < 1 || number > rounds.size()) {
-            return List.of(new Wave(List.of(new Mob("ZOMBIE", 4, 20, 3, 0, 0.23))));
+            return List.of(new Wave(List.of(new Mob("ZOMBIE", 4, 20, 3, 0, 0.23, 100))));
         }
         return rounds.get(number - 1);
     }

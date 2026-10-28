@@ -24,6 +24,8 @@ public final class EditorSession {
         DOORS,
         DOOR_PICK,
         DOOR_EDIT,
+        MACHINES,
+        MACHINE_EDIT,
         WINDOWS,
         WINDOW_FORM,
         SPOT
@@ -52,6 +54,7 @@ public final class EditorSession {
     private final List<String> armorPieces = new ArrayList<>();
     private MarkTarget markTarget;
     private String doorKey;
+    private String machineId;
     private final List<String> selected = new ArrayList<>();
     private long handledTick = Long.MIN_VALUE;
     private int handledX;
@@ -190,6 +193,14 @@ public final class EditorSession {
         this.doorKey = doorKey;
     }
 
+    public synchronized String machineId() {
+        return machineId;
+    }
+
+    public synchronized void machineId(String machineId) {
+        this.machineId = machineId;
+    }
+
     public synchronized List<String> selected() {
         return List.copyOf(selected);
     }
@@ -319,6 +330,7 @@ public final class EditorSession {
         clearWindowDraft();
         clearSelected();
         doorKey = null;
+        machineId = null;
         markTarget = null;
         spotKind = null;
     }

@@ -8,7 +8,7 @@ public enum SpotKind {
     LUCKY_CHESTS("lucky-chests", "Lucky chests", Material.CHEST),
     UPGRADERS("upgraders", "Weapon upgraders", Material.ANVIL),
     PERKS("perks", "Perks", Material.EXPERIENCE_BOTTLE),
-    POWER("power", "Power switch", Material.LEVER);
+    POWER("power", "Power switch", Material.BLAZE_POWDER);
 
     private final String key;
     private final String title;

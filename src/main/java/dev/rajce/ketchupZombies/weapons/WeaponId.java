@@ -7,15 +7,15 @@ public enum WeaponId {
     PISTOL("pistol", "Pistol", Material.WOODEN_HOE, false),
     RIFLE("rifle", "Blaster rifle", Material.STONE_HOE, false),
     SHOTGUN("shotgun", "Blaster shotgun", Material.IRON_HOE, false),
-    SNIPER("sniper", "Sniper blaster", Material.DIAMOND_HOE, false),
-    ROCKET("rocket", "Rocket launcher", Material.GOLDEN_HOE, false),
-    FLAMETHROWER("flamethrower", "Flamethrower", Material.BLAZE_ROD, false),
-    DART("dart", "Blow dart", Material.SPECTRAL_ARROW, false),
-    SOAKER("soaker", "Zombie soaker", Material.BUCKET, false),
-    ZAPPER("zapper", "Zombie zapper", Material.END_ROD, false),
-    PUNCHER("puncher", "Puncher", Material.MACE, true),
-    ELDER("elder", "Elder gun", Material.PRISMARINE_SHARD, false),
-    DIGGER("digger", "Gold digger", Material.NETHERITE_HOE, false);
+    SNIPER("sniper", "Sniper blaster", Material.WOODEN_SHOVEL, false),
+    ROCKET("rocket", "Rocket launcher", Material.STONE_SHOVEL, false),
+    FLAMETHROWER("flamethrower", "Flamethrower", Material.GOLDEN_HOE, false),
+    DART("dart", "Blow dart", Material.IRON_SHOVEL, false),
+    SOAKER("soaker", "Zombie soaker", Material.DIAMOND_HOE, false),
+    ZAPPER("zapper", "Zombie zapper", Material.DIAMOND_PICKAXE, false),
+    PUNCHER("puncher", "Puncher", Material.DIAMOND_AXE, true),
+    ELDER("elder", "Elder gun", Material.SHEARS, false),
+    DIGGER("digger", "Gold digger", Material.GOLDEN_PICKAXE, false);
 
     private final String id;
     private final String title;
@@ -43,6 +43,11 @@ public enum WeaponId {
 
     public boolean melee() {
         return melee;
+    }
+
+    /** Hotbar slot 0: knife, or Puncher when it replaces the knife. */
+    public boolean meleeSlot() {
+        return this == KNIFE || this == PUNCHER;
     }
 
     public boolean wallshot() {

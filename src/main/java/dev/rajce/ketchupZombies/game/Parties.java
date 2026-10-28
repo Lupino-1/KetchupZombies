@@ -13,8 +13,19 @@ public final class Parties {
     private final ConcurrentHashMap<UUID, Party> byMember = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, UUID> invites = new ConcurrentHashMap<>();
 
+    private final ConcurrentHashMap<UUID, String> names = new ConcurrentHashMap<>();
+
     public Party party(Player player) {
-        return byMember.get(player.getUniqueId());
+        return party(player.getUniqueId());
+    }
+
+    public Party party(UUID id) {
+        return byMember.get(id);
+    }
+
+    public String name(UUID id) {
+        String stored = names.get(id);
+        return stored == null || stored.isBlank() ? id.toString().substring(0, 8) : stored;
     }
 
     public List<Player> online(Player player) {
@@ -39,6 +50,7 @@ public final class Parties {
         if (leader.equals(target)) {
             return "self";
         }
+        remember(leader);
         Party party = byMember.computeIfAbsent(leader.getUniqueId(), id -> new Party(id));
         if (!party.leader.equals(leader.getUniqueId())) {
             return "leader";
@@ -60,11 +72,83 @@ public final class Parties {
         }
         Party party = byMember.get(leader);
         if (party == null || party.members.size() >= 4) {
-            return "full";
+            return "gone";
         }
+        remember(player);
         party.members.add(player.getUniqueId());
         byMember.put(player.getUniqueId(), party);
         return null;
+    }
+
+    public String deny(Player player) {
+        UUID leader = invites.remove(player.getUniqueId());
+        return leader == null ? "none" : null;
+    }
+
+    public String kick(Player leader, Player target) {
+        Party party = byMember.get(leader.getUniqueId());
+        if (party == null) {
+            return "none";
+        }
+        if (!party.leader.equals(leader.getUniqueId())) {
+            return "leader";
+        }
+        if (leader.equals(target)) {
+            return "self";
+        }
+        if (!party.members.contains(target.getUniqueId())) {
+            return "missing";
+        }
+        remove(target.getUniqueId(), null);
+        return null;
+    }
+
+    /**
+     * Drop a player from their party. Party kick only — does not touch the server session.
+     * If they led the party, leadership moves to {@code preferredLeader} when that id is still a member,
+     * otherwise to another remaining member.
+     *
+     * @return members still in the party, empty when the party is gone
+     */
+    public List<UUID> remove(UUID id, UUID preferredLeader) {
+        invites.remove(id);
+        Party party = byMember.remove(id);
+        if (party == null) {
+            names.remove(id);
+            return List.of();
+        }
+        party.members.remove(id);
+        invites.entrySet().removeIf(entry -> entry.getValue().equals(id));
+        names.remove(id);
+        if (party.members.isEmpty()) {
+            return List.of();
+        }
+        if (party.leader.equals(id)) {
+            if (preferredLeader != null && party.members.contains(preferredLeader)) {
+                party.leader = preferredLeader;
+            } else {
+                party.leader = party.members.iterator().next();
+            }
+        }
+        return new ArrayList<>(party.members);
+    }
+
+    /** Leader only. Returns kicked member UUIDs (excluding leader). */
+    public List<UUID> disband(Player leader) {
+        Party party = byMember.get(leader.getUniqueId());
+        if (party == null) {
+            return List.of();
+        }
+        if (!party.leader.equals(leader.getUniqueId())) {
+            return null;
+        }
+        List<UUID> members = new ArrayList<>(party.members);
+        for (UUID id : members) {
+            byMember.remove(id);
+            names.remove(id);
+            invites.entrySet().removeIf(entry -> entry.getValue().equals(id) || entry.getKey().equals(id));
+        }
+        return members;
     }
 
     public void leave(Player player) {
@@ -97,5 +181,13 @@ public final class Parties {
         public UUID leader() {
             return leader;
         }
+
+        public Set<UUID> members() {
+            return Set.copyOf(members);
+        }
+    }
+
+    private void remember(Player player) {
+        names.put(player.getUniqueId(), player.getName());
     }
 }

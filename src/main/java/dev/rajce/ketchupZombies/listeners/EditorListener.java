@@ -51,6 +51,10 @@ public final class EditorListener implements Listener {
         }
         if (editor.hologramMark(event.getPlayer())) {
             event.setCancelled(true);
+            if (action == Action.LEFT_CLICK_BLOCK && event.getClickedBlock() != null && editor.markingLucky(event.getPlayer())) {
+                editor.leftClickBlock(event.getPlayer(), event.getClickedBlock());
+                return;
+            }
             editor.confirmHologram(event.getPlayer());
             return;
         }
